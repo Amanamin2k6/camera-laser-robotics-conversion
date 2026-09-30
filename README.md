@@ -4,6 +4,12 @@ AI-generated web conversion attempt and an evidence-based evaluation of **Measur
 
 Generated using OpenAI Codex on September 30, 2026.
 
+[Open the public web application](https://amanamin2k6.github.io/camera-laser-robotics-conversion/)
+
+[Read the plain-text report](https://amanamin2k6.github.io/camera-laser-robotics-conversion/evaluation.txt)
+
+The report lists 21 faults or limitations and 18 working features, supported by actual browser operation and 990 independent laser-ray comparisons. The preserved attempt includes documented input, rendering and orientation-estimation problems.
+
 - Application code: `camera-laser-app/dist/`
 - Plain-text submission report: `evaluation.txt`
 - Browser evidence: `evidence/`

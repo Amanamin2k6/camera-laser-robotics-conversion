@@ -5,7 +5,7 @@ Conversion and testing performed by: OpenAI Codex (AI coding tool)
 
 DELIVERABLE URL
 Public code: https://github.com/Amanamin2k6/camera-laser-robotics-conversion
-Browser application: see the live application link in the repository README.
+Browser application: https://amanamin2k6.github.io/camera-laser-robotics-conversion/
 
 ORIGINAL DEMONSTRATION
 https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/
