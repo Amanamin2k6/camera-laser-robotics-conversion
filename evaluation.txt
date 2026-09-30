@@ -87,7 +87,27 @@ uses a tolerance for floating-point edge contact.
 Closed-form default and +/-30-degree cases and focal-length scaling also passed.
 This supports the ideal intersection calculations. It does not establish UI
 correctness, camera visibility, general orientation recovery, or equivalence
-to a running Mathematica kernel. Mathematica was not executed for this report.
+to a running Mathematica kernel. Desktop Mathematica was not executed.
+
+LIVE ORIGINAL-WEBSITE COMPARISON (FOLLOW-UP)
+The actual live Wolfram demonstration was subsequently operated and compared
+with the public conversion in six paired scenes: default, maximum focal length,
+minimum calibration, a 50.625-degree rotation, two misses, and a near-camera
+placement. See live-comparison.txt and evidence/live-comparison/ for observations
+and original-versus-conversion screenshots.
+Default, maximum-focal-length and minimum-calibration horizontal spot positions
+matched exactly at the inspected SVG precision. The rotated positions differed
+by at most about 0.00000114 image units, consistent with rounded original SVG
+coordinates. Original top-view depths matched displayed conversion depths for
+default and rotated scenes.
+This confirmed distorted camera-image proportions and omitted floor/annotations.
+It also identified changed reticule signs, dot sizes, orientation-control steps,
+missing-hit handling and near-camera failures. Both original and conversion can
+have reticule crowding and invalid camera-plane geometry. Original has no
+numeric angle result card: the conversion's erroneous added estimator is not
+a disagreement with an original numeric result. Original cloud graphics can
+lag control readouts; settled output was used. The independent 990-ray test
+remains separate from these six live-website comparisons.
 
 ALL IDENTIFIED FAULTS / PROBLEMS
 
@@ -162,12 +182,16 @@ ALL IDENTIFIED FAULTS / PROBLEMS
     fields while sliders use 0.01 steps and display rounded values (5.84 and
     0.59). Dragged values need consistent rounding/display; the computation
     may retain more precision internally. The long strings are hard to read.
+    In the live follow-up, a 50.625-degree number entry made the angle slider
+    report 51 while the geometry used 50.625, another number/slider mismatch.
 
 12. The distance reticule is frequently unreadable (graphics/UI bug).
     Case 13 shows many labels piled up at the vanishing point. Even default
     long-distance labels crowd together. The original source adapts its
     reticule scale based on lambda*s; this attempt uses a fixed label list.
-    It needs adaptive ticks, label culling or zoom to support small spacing
+    Live testing confirmed that the original also has some label overlap,
+    even though its markings spread over a different adapted depth range.
+    The conversion needs adaptive ticks, label culling or zoom for small spacing
     and focal length. Merely having labels in the SVG is not functional reading.
 
 13. Overlapping spots still yield an apparently exact estimate (sensor-model
@@ -181,7 +205,9 @@ ALL IDENTIFIED FAULTS / PROBLEMS
     limitation). In case 13 a forced minimum radius keeps dots visible as
     distance increases. Their apparent size no longer follows the perspective
     shrinkage used for nearer spots. The diagram should identify this as a
-    visibility aid rather than imply physical laser-spot size accuracy.
+    visibility aid rather than imply physical laser-spot size accuracy. Live
+    testing showed that the original renderer also imposes a visibility limit
+    on very small dots, so this is not solely a conversion-specific limitation.
 
 15. Mobile plot labels and drag target become too small (responsive UI).
     At approximately 313 pixels plot width, nominal 14-unit SVG text becomes
@@ -228,6 +254,13 @@ ALL IDENTIFIED FAULTS / PROBLEMS
     gives 0.01/0.00069=14.49275, while the app displays 14.500. This difference
     is rounding, not an inverse-formula error, but the precision relationship
     is unexplained and matters for independently checking the measurements.
+
+22. Laser-spot size is not reproduced faithfully (conversion fidelity).
+    Live default comparison: original radius 9 on a 450-wide camera graphic;
+    conversion radius 10 on an 800-wide graphic. Normalizing by plot width,
+    conversion radius is only 62.5% of the original radius. The difference
+    persists despite matching spot coordinates. Its size model should be
+    identified as changed or translated consistently from the original.
 
 WHAT ACTUALLY WORKS
 
@@ -322,6 +355,8 @@ evidence/reticule-crowding.jpg - distance labels at small s and lambda.
 evidence/mobile.jpg - full mobile layout.
 evidence/browser-observations.json - recorded browser observations.
 evidence/geometry-check.txt - independent numerical verification output.
+live-comparison.txt - six actual original-versus-conversion live tests.
+evidence/live-comparison/ - paired live-site screenshots and SVG observations.
 
 The report is plain text. Screenshots support it but are not required to read
 its enumerated faults and working features. Findings cover the exercised cases;

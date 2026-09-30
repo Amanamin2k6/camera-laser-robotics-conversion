@@ -1,0 +1,146 @@
+LIVE WOLFRAM WEBSITE VS. AI WEB CONVERSION
+Tested September 30, 2026 by OpenAI Codex.
+
+Original live demonstration:
+https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/
+Public conversion:
+https://amanamin2k6.github.io/camera-laser-robotics-conversion/camera-laser-app/dist/
+
+METHOD
+Both live sites were actually operated in the in-app browser. Wolfram sliders,
+the orientation dial and the object locator were used, and corresponding
+controls were changed in the conversion. Comparison used settled graphics,
+screenshots and publicly rendered SVG coordinates, rather than only source.
+Desktop Mathematica was not installed or executed.
+
+Original cloud graphics can lag the displayed slider value. An immediate new
+control readout was not treated as proof that the graphic had finished updating.
+The original dial landed at 50.625 degrees; that actual snapped angle was
+entered in the conversion. The near-camera center was reconstructed from four
+rendered original vertices. Those SVG values are rounded, limiting precision.
+
+SIX PAIRED TESTS
+
+1. Default: center (z,x)=(3,-0.2), theta=0, s=1, lambda=0.5.
+   Original rays hit depth 2.5; conversion displayed 2.500 for both.
+   Normalized horizontal spots were u=(-0.2,+0.2) in both.
+   Original projected front face: 225 by 112.5 SVG units, aspect ratio 2:1.
+   Conversion front face: 400 by 140, ratio approximately 2.857:1.
+
+2. Maximum focal length: same scene, lambda=2.
+   Both rendered spots at u=(-0.8,+0.8), the image boundaries.
+   Both enlarged the cuboid and narrowed the top-view field-of-view cone.
+   Conversion correctly kept physical hit depths at 2.500.
+
+3. Minimum calibration: default center/angle, s=lambda=0.1.
+   Both rendered spots at u=(-0.004,+0.004).
+   Original adapted its major reticule labels to approximately 0.016,0.02,
+   0.024,0.03,0.04,0.06,0.1,0.2, with negative counterparts and some fractions.
+   Conversion retained 0.8,1,1.2,1.5,2,3,5,10,20,50 on both sides.
+   Its labels clustered at the vanishing point. Original labels also overlap;
+   adaptive scaling does not make the original reticule flawless.
+
+4. Rotation: center (3,-0.2), theta=50.625 degrees, s=lambda=0.1.
+   Original SVG-derived u=(-0.00541511,+0.00478578).
+   Conversion u=(-0.00541625,+0.00478470).
+   Maximum difference: approximately 0.00000114 image units, consistent with
+   rounded original SVG coordinates. Original top-view ray endpoints indicated
+   depths about 1.846 and 2.090, matching the displayed conversion depths.
+   Conversion displayed angle 50.63 degrees; original has no such result card.
+
+5. Two misses: same center/rotation, s=2, lambda=0.1.
+   Both top views showed rays passing the cuboid. Original retained two tiny
+   dots near the vanishing point, at SVG-derived u approximately +/-0.0000213.
+   Its notebook uses placeholder endpoint depth 10000 for missing hits.
+   Conversion showed no dots, two No hit readings and Unavailable orientation.
+
+6. Near-camera drag: reconstructed center approximately (0.229843,0.884660),
+   theta=50.625, s=2, lambda=0.1. The object crosses the camera plane.
+   Both lasers missed. Original drew a brown face across much of the image;
+   one vertex reached x=-71144.9 SVG units. Conversion omitted brown projected
+   faces. Original clamps projection depth to 0.001; conversion skips faces
+   with corners at or behind its near plane. Both scenes are physically invalid.
+
+ENUMERATED DIFFERENCES
+
+1. Incorrect camera-image aspect ratio in conversion. Original uses equal
+   image-axis scaling. Conversion vertical scale is only 70% of horizontal
+   scale, making the cuboid too squat. Test 1 directly confirms this.
+
+2. Missing perspective floor grid. Original has projected floor lines and
+   vanishing-line depth cues. Conversion uses a flat tinted lower image region.
+
+3. Different reticule scaling. Original adapts tick depths when s*lambda
+   changes; conversion keeps a fixed list. Both can have crowded labels.
+
+4. Different reticule signs. Original negative-u labels are negative;
+   positive-u labels are positive. Conversion uses positive forward depths on
+   both sides and explains that convention. This is a convention change, not
+   proof that its physical distances or mirrored projection are wrong.
+
+5. Different orientation control and resolution. Original is a radian/pi dial
+   snapping by pi/32 (5.625 degrees); conversion uses a degree slider stepping
+   by 1 degree. The source defines that snap and the live dial produced 50.625.
+   The two interfaces cannot select exactly the same angle set via their sliders.
+
+6. Number/slider disagreement in conversion. When matching 50.625 degrees,
+   the number field and geometry used 50.625, but the angle slider DOM value
+   was 51. This extends the previously documented input-consistency problem.
+
+7. Missing geometric annotations. Original shows an object angle arc and
+   s/lambda dimension arrows. Conversion substitutes explanatory text.
+
+8. Added position controls and presets. Original uses an object locator;
+   conversion also has position number fields/sliders, Reset scene and three
+   presets. These additions help reproduce tests, though typing bugs remain.
+
+9. Different spot sizes. At default, original radius is 9 on a 450-wide plot;
+   conversion radius is 10 on an 800-wide plot. Relative to image width,
+   conversion radius is 62.5% of original radius, not an equivalent resize.
+   Both renderers have visibility limits for very small dots: original miss
+   dots had radius 1, and conversion normal dots have a minimum radius of 3
+   in their respective SVG coordinate systems. Raw pixel sizes must therefore
+   be normalized before comparing them.
+
+10. Better missing-hit indication in conversion. Original keeps distant
+    placeholder dots and has no No hit cards; conversion removes them and
+    explicitly identifies unavailable measurements. This difference is useful.
+
+11. Different near-plane failures. Original can stretch a face enormously;
+    conversion can omit it entirely. Neither fully handles the physically
+    invalid camera-plane-crossing scene. Original should not be assumed correct.
+
+12. Added numeric result table and angle estimate. Original provides the
+    reticule and explanatory formulas, not equivalent result cards. The
+    previously documented 60-to-50.94-degree estimator error is in a feature
+    added by the conversion; original does not display a numeric angle result
+    with which that value could be directly compared.
+
+13. Original website actions are omitted. Snapshot tabs, cloud/notebook/source
+    actions and fullscreen demonstration mode are not reproduced. Conversion
+    offers separate source-file/report links. These are interface differences,
+    not errors in ray-intersection arithmetic.
+
+14. Update timing differs. Original cloud graphics sometimes lag slider
+    readouts; conversion updates SVG immediately in the browser. Comparing a
+    transient original graphic with its new readout could create false errors.
+
+ENUMERATED MATCHES
+
+1. Default object placement, footprint, rotation, laser offset and focal length.
+2. Default hit depth 2.5, correctly distinguished from center depth 3.
+3. Mirrored horizontal projection in the four tested observable-hit scenes.
+4. Focal-length scaling of spots/object and field-of-view narrowing/widening.
+5. Rotated footprint and nearest ray intersections in the tested rotated pose.
+6. Top-view rays pass the object in the tested two-miss case in both sites.
+
+EVIDENCE AND LIMITS
+evidence/live-comparison/live-observations.json contains paired SVG coordinates,
+control values and conversion result text for the six cases. Paired screenshots
+cover minimum, rotation, misses and near-camera cases. The default is recorded
+in the paired SVG log. original-intermediate-render.jpg illustrates an original
+graphic captured during queued updates; it is not a settled default comparison.
+
+Matching SVG-derived horizontal coordinates supports these specific scenes,
+not every continuous pose. The prior 990-ray independent analytical check is
+a separate test; it is not 990 comparisons against the live Wolfram website.

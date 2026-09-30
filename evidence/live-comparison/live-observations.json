@@ -1,0 +1,584 @@
+{
+  "date": "2026-09-30",
+  "method": "Operate live Wolfram and deployed conversion through browser controls; inspect publicly rendered SVG coordinates.",
+  "normalization": {
+    "originalCamera": {
+      "svgWidth": 450,
+      "svgHeight": 225,
+      "globalOrigin": [
+        66,
+        5
+      ],
+      "imageCenter": [
+        291,
+        117.5
+      ],
+      "unitsPerImageUnit": 281.25
+    },
+    "conversionCamera": {
+      "svgWidth": 800,
+      "svgHeight": 280,
+      "imageCenter": [
+        400,
+        140
+      ],
+      "horizontalScale": 500,
+      "verticalScale": 350
+    },
+    "originalTop": {
+      "cameraOrigin": [
+        94.15,
+        117.3
+      ],
+      "worldScale": 28.05
+    }
+  },
+  "cases": [
+    {
+      "case": "default",
+      "original": {
+        "cameraBrown": [
+          "189.75,173.75 189.75,61.25 414.75,61.25 414.75,173.75"
+        ],
+        "controls": [
+          1,
+          0.5
+        ],
+        "redLines": [
+          {
+            "dash": "",
+            "points": "94.15,89.25 164.275,89.25"
+          },
+          {
+            "dash": "",
+            "points": "94.15,145.35 164.275,145.35"
+          },
+          {
+            "dash": "4,4",
+            "points": "164.275,89.25 94.15,117.3"
+          },
+          {
+            "dash": "4,4",
+            "points": "164.275,145.35 94.15,117.3"
+          }
+        ],
+        "reticule": [
+          "0.8\n-\n0.8\n1\n-\n1\n1.2\n-\n1.2\n1.5\n-\n1.5\n2\n-\n2\n3\n-\n3\n5\n-\n5\n10\n-\n10\ncamera\nimage"
+        ],
+        "spots": [
+          {
+            "cx": 234.75,
+            "cy": 117.5,
+            "r": 9
+          },
+          {
+            "cx": 347.25,
+            "cy": 117.5,
+            "r": 9
+          }
+        ],
+        "topBrown": [
+          "164.275,179.01 192.325,179.01 192.325,66.81 164.275,66.81 164.275,179.01"
+        ]
+      },
+      "conversion": {
+        "values": [
+          {
+            "id": "zNumber",
+            "value": "3"
+          },
+          {
+            "id": "xNumber",
+            "value": "-0.2"
+          },
+          {
+            "id": "angleNumber",
+            "value": "0"
+          },
+          {
+            "id": "sNumber",
+            "value": "1"
+          },
+          {
+            "id": "fNumber",
+            "value": "0.5"
+          }
+        ],
+        "results": "Measurements\nLeft laser depth\n2.500 units\nRight laser depth\n2.500 units\nEstimated face angle\n0.00°\n\nBoth lasers intersect the cuboid.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t1.000\t-0.20000\t2.500\nRight\t-1.000\t0.20000\t2.500\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face.",
+        "spots": [
+          {
+            "cx": 300,
+            "cy": 140,
+            "r": 10
+          },
+          {
+            "cx": 500,
+            "cy": 140,
+            "r": 10
+          }
+        ],
+        "cameraBrown": [
+          "220,210 220,70 620,70 620,210"
+        ]
+      }
+    },
+    {
+      "case": "focal-length maximum lambda=2",
+      "original": {
+        "cameraBrown": [
+          "-114,342.5 -114,-107.5 786,-107.5 786,342.5"
+        ],
+        "controls": [
+          1,
+          2
+        ],
+        "redLines": [
+          {
+            "dash": "",
+            "points": "94.15,89.25 164.275,89.25"
+          },
+          {
+            "dash": "",
+            "points": "94.15,145.35 164.275,145.35"
+          },
+          {
+            "dash": "4,4",
+            "points": "164.275,89.25 94.15,117.3"
+          },
+          {
+            "dash": "4,4",
+            "points": "164.275,145.35 94.15,117.3"
+          }
+        ],
+        "reticule": [
+          "3\n-\n3\n5\n-\n5\n10\n-\n10\ncamera\nimage"
+        ],
+        "spots": [
+          {
+            "cx": 66,
+            "cy": 117.5,
+            "r": 36
+          },
+          {
+            "cx": 516,
+            "cy": 117.5,
+            "r": 36
+          }
+        ],
+        "topBrown": [
+          "164.275,179.01 192.325,179.01 192.325,66.81 164.275,66.81 164.275,179.01"
+        ]
+      },
+      "conversion": {
+        "values": [
+          {
+            "id": "zNumber",
+            "value": "3"
+          },
+          {
+            "id": "xNumber",
+            "value": "-0.2"
+          },
+          {
+            "id": "angleNumber",
+            "value": "0"
+          },
+          {
+            "id": "sNumber",
+            "value": "1"
+          },
+          {
+            "id": "fNumber",
+            "value": "2"
+          }
+        ],
+        "results": "Measurements\nLeft laser depth\n2.500 units\nRight laser depth\n2.500 units\nEstimated face angle\n0.00°\n\nBoth lasers intersect the cuboid.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t1.000\t-0.80000\t2.500\nRight\t-1.000\t0.80000\t2.500\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face.",
+        "spots": [
+          {
+            "cx": 0,
+            "cy": 140,
+            "r": 40
+          },
+          {
+            "cx": 800,
+            "cy": 140,
+            "r": 40
+          }
+        ],
+        "cameraBrown": [
+          "-320,420 -320,-140 1280,-140 1280,420"
+        ]
+      }
+    },
+    {
+      "case": "minimum s=0.1 lambda=0.1",
+      "original": {
+        "cameraBrown": [
+          "270.75,128.75 270.75,106.25 315.75,106.25 315.75,128.75"
+        ],
+        "controls": [
+          0.1,
+          0.1
+        ],
+        "redLines": [
+          {
+            "dash": "",
+            "points": "94.15,114.495 164.275,114.495"
+          },
+          {
+            "dash": "",
+            "points": "94.15,120.105 164.275,120.105"
+          },
+          {
+            "dash": "4,4",
+            "points": "164.275,114.495 94.15,117.3"
+          },
+          {
+            "dash": "4,4",
+            "points": "164.275,120.105 94.15,117.3"
+          }
+        ],
+        "reticule": [
+          "0.016\n-\n0.016\n1\n50\n-\n1\n50\n0.024\n-\n0.024\n0.03\n-\n0.03\n1\n25\n-\n1\n25\n3\n50\n-\n3\n50\n1\n10\n-\n1\n10\n1\n5\n-\n1\n5\ncamera\nimage"
+        ],
+        "spots": [
+          {
+            "cx": 289.875,
+            "cy": 117.5,
+            "r": 1.8
+          },
+          {
+            "cx": 292.125,
+            "cy": 117.5,
+            "r": 1.8
+          }
+        ],
+        "topBrown": [
+          "164.275,179.01 192.325,179.01 192.325,66.81 164.275,66.81 164.275,179.01"
+        ]
+      },
+      "conversion": {
+        "values": [
+          {
+            "id": "zNumber",
+            "value": "3"
+          },
+          {
+            "id": "xNumber",
+            "value": "-0.2"
+          },
+          {
+            "id": "angleNumber",
+            "value": "0"
+          },
+          {
+            "id": "sNumber",
+            "value": "0.1"
+          },
+          {
+            "id": "fNumber",
+            "value": "0.1"
+          }
+        ],
+        "results": "Measurements\nLeft laser depth\n2.500 units\nRight laser depth\n2.500 units\nEstimated face angle\n0.00°\n\nBoth lasers intersect the cuboid.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t0.100\t-0.00400\t2.500\nRight\t-0.100\t0.00400\t2.500\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face.",
+        "spots": [
+          {
+            "cx": 398,
+            "cy": 140,
+            "r": 3
+          },
+          {
+            "cx": 402,
+            "cy": 140,
+            "r": 3
+          }
+        ],
+        "cameraBrown": [
+          "364,154 364,126 444,126 444,154"
+        ]
+      }
+    },
+    {
+      "case": "rotation theta=50.625 s=0.1 lambda=0.1 center=(3,-0.2)",
+      "original": {
+        "cameraBrown": [
+          "267.891,133.379 267.891,101.621 274.12,92.7591 274.12,142.241",
+          "274.12,142.241 274.12,92.7591 303.339,110.849 303.339,124.151"
+        ],
+        "controls": [
+          0.1,
+          0.1
+        ],
+        "redLines": [
+          {
+            "dash": "",
+            "points": "94.15,114.495 145.939,114.495"
+          },
+          {
+            "dash": "",
+            "points": "94.15,120.105 152.774,120.105"
+          },
+          {
+            "dash": "4,4",
+            "points": "145.939,114.495 94.15,117.3"
+          },
+          {
+            "dash": "4,4",
+            "points": "152.774,120.105 94.15,117.3"
+          }
+        ],
+        "reticule": [
+          "0.016\n-\n0.016\n1\n50\n-\n1\n50\n0.024\n-\n0.024\n0.03\n-\n0.03\n1\n25\n-\n1\n25\n3\n50\n-\n3\n50\n1\n10\n-\n1\n10\n1\n5\n-\n1\n5\ncamera\nimage"
+        ],
+        "spots": [
+          {
+            "cx": 289.477,
+            "cy": 117.5,
+            "r": 2.4373125
+          },
+          {
+            "cx": 292.346,
+            "cy": 117.5,
+            "r": 2.153115
+          }
+        ],
+        "topBrown": [
+          "212.769,169.341 230.563,147.658 143.831,76.4791 126.037,98.162 212.769,169.341"
+        ]
+      },
+      "conversion": {
+        "values": [
+          {
+            "id": "zNumber",
+            "value": "3"
+          },
+          {
+            "id": "xNumber",
+            "value": "-0.2"
+          },
+          {
+            "id": "angleNumber",
+            "value": "50.625"
+          },
+          {
+            "id": "sNumber",
+            "value": "0.1"
+          },
+          {
+            "id": "fNumber",
+            "value": "0.1"
+          }
+        ],
+        "results": "Measurements\nLeft laser depth\n1.846 units\nRight laser depth\n2.090 units\nEstimated face angle\n50.63°\n\nBoth lasers intersect the cuboid.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t0.100\t-0.00542\t1.846\nRight\t-0.100\t0.00478\t2.090\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face.",
+        "spots": [
+          {
+            "cx": 397.2918727264168,
+            "cy": 140,
+            "r": 3
+          },
+          {
+            "cx": 402.392350193473,
+            "cy": 140,
+            "r": 3
+          }
+        ],
+        "cameraBrown": [
+          "358.9173517354035,159.76088498804904 358.9173517354035,120.23911501195096 369.99068111360805,109.211347374972 369.99068111360805,170.78865262502802",
+          "369.99068111360805,170.78865262502802 369.99068111360805,109.211347374972 421.9362602806693,131.72346784598548 421.9362602806693,148.27653215401452"
+        ]
+      }
+    },
+    {
+      "case": "both lasers miss theta=50.625 s=2 lambda=0.1",
+      "original": {
+        "cameraBrown": [
+          "267.891,133.379 267.891,101.621 274.12,92.7591 274.12,142.241",
+          "274.12,142.241 274.12,92.7591 303.339,110.849 303.339,124.151"
+        ],
+        "controls": [
+          2,
+          0.1
+        ],
+        "redLines": [
+          {
+            "dash": "",
+            "points": "966,61.2 94.15,61.2"
+          },
+          {
+            "dash": "",
+            "points": "966,61.2 94.15,61.2"
+          },
+          {
+            "dash": "",
+            "points": "966,173.4 94.15,173.4"
+          },
+          {
+            "dash": "",
+            "points": "966,173.4 94.15,173.4"
+          },
+          {
+            "dash": "4,4",
+            "points": "966,117.126 94.15,117.3"
+          },
+          {
+            "dash": "4,4",
+            "points": "966,117.126 94.15,117.3"
+          },
+          {
+            "dash": "4,4",
+            "points": "966,117.474 94.15,117.3"
+          },
+          {
+            "dash": "4,4",
+            "points": "966,117.474 94.15,117.3"
+          }
+        ],
+        "reticule": [
+          "3\n10\n-\n3\n10\n1\n2\n-\n1\n2\n1\n-\n1\ncamera\nimage"
+        ],
+        "spots": [
+          {
+            "cx": 290.994,
+            "cy": 117.5,
+            "r": 1
+          },
+          {
+            "cx": 291.006,
+            "cy": 117.5,
+            "r": 1
+          }
+        ],
+        "topBrown": [
+          "212.769,169.341 230.563,147.658 143.831,76.4791 126.037,98.162 212.769,169.341"
+        ]
+      },
+      "conversion": {
+        "values": [
+          {
+            "id": "zNumber",
+            "value": "3"
+          },
+          {
+            "id": "xNumber",
+            "value": "-0.2"
+          },
+          {
+            "id": "angleNumber",
+            "value": "50.625"
+          },
+          {
+            "id": "sNumber",
+            "value": "2"
+          },
+          {
+            "id": "fNumber",
+            "value": "0.1"
+          }
+        ],
+        "results": "Measurements\nLeft laser depth\nNo hit\nRight laser depth\nNo hit\nEstimated face angle\nUnavailable\n\nBoth lasers miss the cuboid. Orientation cannot be estimated.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t2.000\t—\t—\nRight\t-2.000\t—\t—\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face.",
+        "spots": [],
+        "cameraBrown": [
+          "358.9173517354035,159.76088498804904 358.9173517354035,120.23911501195096 369.99068111360805,109.211347374972 369.99068111360805,170.78865262502802",
+          "369.99068111360805,170.78865262502802 369.99068111360805,109.211347374972 421.9362602806693,131.72346784598548 421.9362602806693,148.27653215401452"
+        ]
+      }
+    },
+    {
+      "case": "near-camera placement reached by original locator drag",
+      "reconstructedCenter": {
+        "z": 0.22984313725490216,
+        "x": 0.8846604278074864
+      },
+      "angle": 50.625,
+      "original": {
+        "cameraBrown": [
+          "290.968,130.937 290.968,104.063 -71144.9,-28007.5 -71144.9,28242.5"
+        ],
+        "controls": [
+          2,
+          0.1
+        ],
+        "redLines": [
+          {
+            "dash": "",
+            "points": "966,61.2 94.15,61.2"
+          },
+          {
+            "dash": "",
+            "points": "966,61.2 94.15,61.2"
+          },
+          {
+            "dash": "",
+            "points": "966,173.4 94.15,173.4"
+          },
+          {
+            "dash": "",
+            "points": "966,173.4 94.15,173.4"
+          },
+          {
+            "dash": "4,4",
+            "points": "966,117.126 94.15,117.3"
+          },
+          {
+            "dash": "4,4",
+            "points": "966,117.126 94.15,117.3"
+          },
+          {
+            "dash": "4,4",
+            "points": "966,117.474 94.15,117.3"
+          },
+          {
+            "dash": "4,4",
+            "points": "966,117.474 94.15,117.3"
+          }
+        ],
+        "reticule": [
+          "3\n10\n-\n3\n10\n1\n2\n-\n1\n2\n1\n-\n1\ncamera\nimage"
+        ],
+        "spots": [
+          {
+            "cx": 290.994,
+            "cy": 117.5,
+            "r": 1
+          },
+          {
+            "cx": 291.006,
+            "cy": 117.5,
+            "r": 1
+          }
+        ],
+        "topBrown": [
+          "135.066,138.916 152.86,117.233 66.1286,46.0546 48.3338,67.7375 135.066,138.916"
+        ]
+      },
+      "conversion": {
+        "values": [
+          {
+            "id": "zNumber",
+            "value": "0.22984313725490216"
+          },
+          {
+            "id": "xNumber",
+            "value": "0.8846604278074864"
+          },
+          {
+            "id": "angleNumber",
+            "value": "50.625"
+          },
+          {
+            "id": "sNumber",
+            "value": "2"
+          },
+          {
+            "id": "fNumber",
+            "value": "0.1"
+          }
+        ],
+        "results": "Measurements\nLeft laser depth\nNo hit\nRight laser depth\nNo hit\nEstimated face angle\nUnavailable\n\nBoth lasers miss the cuboid. Orientation cannot be estimated.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t2.000\t—\t—\nRight\t-2.000\t—\t—\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face.",
+        "spots": [],
+        "cameraBrown": []
+      }
+    }
+  ],
+  "limitations": "Original SVG coordinates are rounded, and cloud output can lag the control readout. Settled rendered output was used for comparisons. The moved center was reconstructed from the four rendered object vertices, rather than entered numerically in the original."
+}
