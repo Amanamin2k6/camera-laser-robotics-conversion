@@ -1,0 +1,4 @@
+PASS: 990 laser-ray cases agree with independent oriented-box slab calculations.
+PASS: default projection, common-face +/-30 degrees, focal scaling, one miss and two misses.
+OBSERVED LIMITATION: theta=60 degrees, two different faces, estimator=50.93532 degrees.
+These checks validate ideal geometry; they do not validate camera visibility, UI or full orientation recovery.

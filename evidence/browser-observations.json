@@ -1,0 +1,100 @@
+{
+  "date": "2026-09-30",
+  "tool": "Codex in-app browser",
+  "localURL": "http://127.0.0.1:4173/",
+  "orientationAndMisses": [
+    {
+      "case": "angle 60",
+      "results": "Measurements\nLeft laser depth\n3.268 units\nRight laser depth\n5.732 units\nEstimated face angle\n50.94°\n\nBoth lasers intersect the cuboid.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t1.000\t-0.15300\t3.268\nRight\t-1.000\t0.08723\t5.732\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face."
+    },
+    {
+      "case": "angle 180",
+      "results": "Measurements\nLeft laser depth\n4.500 units\nRight laser depth\n4.500 units\nEstimated face angle\n0.00°\n\nBoth lasers intersect the cuboid.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t1.000\t-0.11111\t4.500\nRight\t-1.000\t0.11111\t4.500\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face."
+    },
+    {
+      "case": "angle -30",
+      "results": "Measurements\nLeft laser depth\n5.000 units\nRight laser depth\n3.845 units\nEstimated face angle\n-30.00°\n\nBoth lasers intersect the cuboid.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t1.000\t-0.10000\t5.000\nRight\t-1.000\t0.13003\t3.845\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face."
+    },
+    {
+      "case": "one laser misses",
+      "results": "Measurements\nLeft laser depth\n4.500 units\nRight laser depth\nNo hit\nEstimated face angle\nUnavailable\n\nOne laser misses the cuboid. Orientation needs two distances.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t1.000\t-0.11111\t4.500\nRight\t-1.000\t—\t—\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face."
+    },
+    {
+      "case": "edge on",
+      "results": "Measurements\nLeft laser depth\nNo hit\nRight laser depth\nNo hit\nEstimated face angle\nUnavailable\n\nBoth lasers miss the cuboid. Orientation cannot be estimated.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t1.000\t—\t—\nRight\t-1.000\t—\t—\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face."
+    }
+  ],
+  "calibrationAndEntry": [
+    {
+      "case": "double focal length",
+      "results": "Measurements\nLeft laser depth\n2.500 units\nRight laser depth\n2.500 units\nEstimated face angle\n0.00°\n\nBoth lasers intersect the cuboid.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t1.000\t-0.40000\t2.500\nRight\t-1.000\t0.40000\t2.500\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face."
+    },
+    {
+      "case": "out of image",
+      "results": "Measurements\nLeft laser depth\n0.500 units\nRight laser depth\n0.500 units\nEstimated face angle\n0.00°\n\nBoth lasers intersect the cuboid.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t1.000\t-4.00000\t0.500\nRight\t-1.000\t4.00000\t0.500\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face."
+    },
+    {
+      "case": "camera inside cuboid",
+      "results": "Measurements\nLeft laser depth\n0.600 units\nRight laser depth\n0.600 units\nEstimated face angle\n0.00°\n\nBoth lasers intersect the cuboid.\n\nLaser\tLateral x\tImage u\tRecovered depth\nLeft\t1.000\t-3.33333\t0.600\nRight\t-1.000\t3.33333\t0.600\n\nEach laser is s units from the camera; their separation is 2s. Recover z = −λx/u, then estimate θ = atan2(zright − zleft, 2s). This assumes both measurements belong to one planar face."
+    },
+    {
+      "case": "type negative angle",
+      "controls": "Object depth z\nObject center; camera at z = 0\nLateral position x\nPositive x is above the optical axis\nObject orientation θ\nDegrees; 0° faces the camera\nLaser offset s\nCamera to each laser; total spacing = 2s\nFocal length λ\nDistance from pinhole to image plane",
+      "value": null,
+      "dom": "30"
+    }
+  ],
+  "additionalObservedCases": {
+    "typedFocalLength": {
+      "requested": "0.75",
+      "actual": "0.175"
+    },
+    "sliderIncrement": {
+      "s": 1.01,
+      "f": 0.51
+    },
+    "upperDepthClamp": 15,
+    "emptyDepth": 0.1,
+    "dragCenter": {
+      "z": 5.839409692997914,
+      "x": 0.5917894857324888
+    },
+    "mobile": {
+      "requestedViewport": {
+        "width": 390,
+        "height": 844
+      },
+      "plotWidth": 313.3333435058594,
+      "horizontalOverflow": false
+    },
+    "cameraInside": {
+      "z": 0.1,
+      "x": 0,
+      "s": 1,
+      "f": 0.5,
+      "depths": [
+        0.6,
+        0.6
+      ],
+      "brownFaces": 0
+    },
+    "defaultFaceSVG": {
+      "width": 400,
+      "height": 140
+    },
+    "farSpots": {
+      "z": 15,
+      "s": 0.1,
+      "f": 0.1,
+      "centers": [
+        399.6551724137931,
+        400.3448275862069
+      ],
+      "radii": [
+        3,
+        3
+      ]
+    }
+  },
+  "consoleErrorsAndWarnings": []
+}

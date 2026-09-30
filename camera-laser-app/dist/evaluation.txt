@@ -1,0 +1,330 @@
+ASSIGNMENT 1 - AI ROBOTICS CONVERSION AND INVESTIGATION
+Measuring Distance and Orientation Using Camera and Lasers
+Evaluation date: September 30, 2026
+Conversion and testing performed by: OpenAI Codex (AI coding tool)
+
+DELIVERABLE URL
+Public code: https://github.com/Amanamin2k6/camera-laser-robotics-conversion
+Browser application: see the live application link in the repository README.
+
+ORIGINAL DEMONSTRATION
+https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/
+Authors: Shiva Shahrokhi and Aaron T. Becker (2016).
+The downloaded Mathematica source is preserved in source/original.nb.
+The original and this adaptation are attributed as CC BY-NC-SA.
+
+WHAT WAS ATTEMPTED
+Codex inspected the actual Mathematica notebook and translated its rotated
+rectangular footprint, nearest laser/edge intersections, pinhole projection,
+movable object, focal-length control, laser-spacing control and reticule into
+HTML, CSS, JavaScript and SVG. The browser version additionally displays exact
+simulated depths, recovered depths and a two-distance angle estimate.
+It runs independently of Mathematica. This report evaluates the submitted
+attempt; the discovered faults were retained so the report describes that code.
+
+Coordinate convention: z is forward depth; x is lateral position. The object
+center is (z,x). Its footprint is 1 unit deep and 4 units wide before rotation,
+and its vertical height is 2 units. The lasers start at lateral coordinates
++s and -s, so their total separation is 2s. Image coordinates follow the source
+notebook's mirrored convention u=-lambda*x/z. All lengths use consistent
+arbitrary units. A laser depth is axial depth to an intersection, not Euclidean
+camera-to-point distance and not object-center depth.
+
+TEST METHOD AND OBSERVED CASES
+The app was opened and actually operated in the Codex in-app browser. Tests
+included mouse dragging, keyboard slider increments, typing into number fields,
+all three presets, positive/negative rotations, calibration changes, missing
+hits, field-of-view boundaries, near-camera configurations, and a 390 by 844
+mobile viewport. Graphics were visually inspected and screenshots were saved.
+The following are browser observations, not claims based only on reading code.
+
+1. Default: z=3, x=-0.2, theta=0, s=1, lambda=0.5. Both hit depths were
+   2.500; image coordinates were -0.20000 and +0.20000; angle was 0.00 degrees.
+2. Tilted-face preset: z=5, x=0, theta=30, s=1, lambda=0.5. Depths were
+   3.845 and 5.000; image coordinates were -0.13003 and +0.10000; angle 30.00.
+3. At theta=-30 with the other tilted-preset values unchanged, the depths
+   swapped to 5.000 and 3.845, and the estimate was -30.00 degrees.
+4. At theta=60 with z=5, x=0, s=1, lambda=0.5, the depths were 3.268 and
+   5.732. The estimate was 50.94 degrees, and the status said both lasers hit.
+5. At theta=180 with z=5, x=0, s=1, lambda=0.5, both depths were 4.500
+   and the estimate was 0.00 degrees.
+6. The One laser misses preset returned left depth 4.500, right No hit,
+   and Unavailable orientation. The Edge on preset returned two No hit values.
+7. At the default geometry, changing lambda from 0.5 to 1 changed image u
+   from +/-0.20000 to +/-0.40000, while recovered depths stayed 2.500.
+8. With z=1, x=-0.2, theta=0, s=1, lambda=2, reported depths were 0.500,
+   image coordinates +/-4.00000, and angle 0.00. Neither dot was visible in
+   the image, whose horizontal bounds are +/-0.8.
+9. With z=0.1, x=0, theta=0, s=1, lambda=0.5, the object surrounds the
+   camera. The app reported two depths of 0.600. The camera image had no brown
+   projected object face, although the top view showed a cuboid.
+10. Select-all and type '-30' into the angle number field: it became +30.
+    Select-all and type '0.75' into focal length: it became 0.175 in this test.
+    In contrast, replacing a field's value in one operation could set -30 or
+    0.5 correctly. The typing failure is distinct from the underlying math.
+11. Clearing the depth field immediately changed it to 0.1. Entering depth
+    99 immediately changed it to 15. Keyboard Right on the s and lambda
+    sliders changed their values from 1 to 1.01 and 0.5 to 0.51 respectively.
+12. Dragging the default object handle moved the center to approximately
+    z=5.839409692997914, x=0.5917894857324888. Both depths updated to 5.339.
+13. With s=lambda=0.1, distance labels crowded together at the image center.
+    With z=15 as well, the dots had SVG centers 399.65517 and 400.34483, each
+    with radius 3, so the two rendered spots overlapped heavily.
+14. At 390 by 844, controls and panels stacked without horizontal page
+    overflow. The plots were approximately 313 pixels wide, making their
+    distance markings and object handle very small.
+15. The default projected front face had SVG points (220,210), (220,70),
+    (620,70), (620,210): width 400, height 140. Its aspect ratio was 2.857,
+    rather than the physical face ratio 4/2=2 with equal image-axis scaling.
+
+INDEPENDENT CALCULATION CHECK
+node camera-laser-app/verify.mjs compares the JavaScript polygon-edge method
+with a separately implemented analytical ray/oriented-box slab calculation.
+All 990 tested laser rays agreed on hit/miss and depth, within 1e-9 units.
+The tested grid covered z=3,5,15; x=-4,-0.2,0,2,4; eleven angles including
+0, +/-30, +/-60, +/-90 and +/-180; and s=0.1,1,2. The independent reference
+uses a tolerance for floating-point edge contact.
+Closed-form default and +/-30-degree cases and focal-length scaling also passed.
+This supports the ideal intersection calculations. It does not establish UI
+correctness, camera visibility, general orientation recovery, or equivalence
+to a running Mathematica kernel. Mathematica was not executed for this report.
+
+ALL IDENTIFIED FAULTS / PROBLEMS
+
+1. Invalid angle estimate when hits belong to different faces (robotics error).
+   In case 4, theta=60 produced 50.94 degrees. The two intersections lie on
+   different cuboid edges. The shared-plane formula measures the connecting
+   chord, not either face's inclination. The app's internal geometry records
+   the face IDs, but the estimator does not check them. It presents the result
+   with the ordinary successful-hit status. A same-face check is needed.
+
+2. Full object orientation is ambiguous (inference limitation).
+   Case 5 gives 0 degrees at a 180-degree rotation. That is consistent with
+   an undirected planar face's inclination, but it does not recover the full
+   signed orientation selected by the object control. Two laser depths cannot
+   distinguish all symmetric poses. The interface should explain this ambiguity
+   and distinguish selected object rotation from observable face inclination.
+
+3. Off-image laser hits are treated as usable camera measurements (visibility
+   error). In case 8, u=+/-4 is outside the stated +/-0.8 bounds and neither
+   spot is visible, yet the app reports two recovered distances and an angle.
+   These are valid simulated geometric intersections, not measurements the
+   depicted finite camera could obtain. No out-of-frame warning is shown.
+
+4. Physically invalid camera/object overlap is allowed (model validation).
+   Case 9 places the camera and laser origins inside the cuboid footprint:
+   its depth interval is [-0.4,0.6]. The app reports exit-surface distances
+   as ordinary measurements. It does not warn about overlap or require the
+   object to be in front of the camera. This invalid scene should be excluded
+   or explicitly identified, even if the ideal intersection arithmetic works.
+
+5. Camera-plane crossings are not properly clipped (rendering error).
+   In case 9 the top-view object remains visible but the camera image contains
+   no projected brown face. Faces with a corner at or behind the near plane
+   are skipped wholesale instead of clipping their visible portions. There
+   is no explanation that the projection is invalid. This accompanies the
+   unsupported near-camera configuration in fault 4.
+
+6. Unequal image-axis scaling distorts the cuboid (graphics error).
+   Case 15 confirms the default front face is drawn at aspect ratio 2.857,
+   although its projected physical width/height ratio is 2. The renderer uses
+   500 SVG units per horizontal image unit and 350 per vertical unit. The
+   source demonstration's camera graphic uses equal coordinate scaling.
+   The numeric horizontal u calculations can be correct while this picture
+   is geometrically distorted.
+
+7. Negative values cannot be entered reliably by ordinary typing (UI bug).
+   Selecting and typing '-30' produces +30. Every input event immediately
+   converts and rewrites the field; an intermediate minus sign is treated
+   as an empty number and replaced. Negative angles/lateral positions are
+   available through sliders or whole-value replacement, but ordinary typing
+   loses the requested sign.
+
+8. Decimal typing changes the requested number (UI bug).
+   Typing focal length '0.75' produced 0.175 in case 10. Immediate clamping
+   and rewriting of intermediate input states interferes with decimal entry.
+   The field needs to preserve draft text until a valid value is committed.
+
+9. Clearing an input unexpectedly changes the scene (UI bug).
+   Case 11: clearing object depth immediately set it to the minimum, 0.1.
+   Clearing is normally part of entering a replacement number, but here it
+   moves the object into a problematic near-camera configuration before the
+   replacement is finished. Empty drafts should not be interpreted as zero.
+
+10. Out-of-range values are silently replaced (UI limitation).
+    Entering 99 for depth becomes 15 immediately, without explaining that
+    the value was constrained. Preventing excessive values is useful, but a
+    user can believe the requested value was accepted unless they notice the
+    replacement. Clamping should be explained or validated on commit.
+
+11. Dragging exposes excessive precision and disagrees with slider steps (UI
+    consistency). Case 12 puts long fractional strings into the narrow number
+    fields while sliders use 0.01 steps and display rounded values (5.84 and
+    0.59). Dragged values need consistent rounding/display; the computation
+    may retain more precision internally. The long strings are hard to read.
+
+12. The distance reticule is frequently unreadable (graphics/UI bug).
+    Case 13 shows many labels piled up at the vanishing point. Even default
+    long-distance labels crowd together. The original source adapts its
+    reticule scale based on lambda*s; this attempt uses a fixed label list.
+    It needs adaptive ticks, label culling or zoom to support small spacing
+    and focal length. Merely having labels in the SVG is not functional reading.
+
+13. Overlapping spots still yield an apparently exact estimate (sensor-model
+    limitation). At z=15, s=lambda=0.1, the two rendered centers are only
+    0.68966 SVG units apart, but each radius is 3. They visually merge, while
+    the table still gives two independent exact simulated distances and an
+    angle. No finite sensor resolution or separation confidence is modeled.
+    This is an ideal-model limitation, not a failure of the algebraic inverse.
+
+14. Minimum rendered dot size is not a physical spot-size model (graphics
+    limitation). In case 13 a forced minimum radius keeps dots visible as
+    distance increases. Their apparent size no longer follows the perspective
+    shrinkage used for nearer spots. The diagram should identify this as a
+    visibility aid rather than imply physical laser-spot size accuracy.
+
+15. Mobile plot labels and drag target become too small (responsive UI).
+    At approximately 313 pixels plot width, nominal 14-unit SVG text becomes
+    about 5.5 screen pixels tall and the 16-unit handle diameter about 6.3
+    pixels. The page fits horizontally, but the reticule is difficult to read
+    and the object handle is difficult to acquire. Numeric controls remain
+    usable. Mobile rendering needs a larger plot/zoom or accessible annotations.
+
+16. Mobile users must scroll through controls before seeing any result (layout
+    limitation). At 390 by 844, the first screen contains the title and most
+    controls; neither plot nor measurement results are visible. Adjusting a
+    control and seeing its graphical effect requires substantial scrolling.
+    A compact control layout or nearby summary would make exploration easier.
+
+17. Important original visual annotations are omitted (conversion fidelity).
+    The conversion has an angle slider and textual offset/focal-length labels,
+    but lacks the original orientation dial, object angle arc, and s/lambda
+    dimension arrows in the top view. The replacement control works, yet
+    readers cannot directly see those geometric relationships as in the source.
+
+18. The perspective floor grid is missing (conversion fidelity).
+    The original camera view draws a projected floor grid and horizon/ground
+    regions. The attempt draws a flat tinted lower half instead. The cuboid
+    and spots are visible, but the original perspective depth cues are absent.
+
+19. The top-view window clips allowed object positions (display limitation).
+    At center depth z=15, even an unrotated object extends to 15.5, beyond
+    the fixed visible range. Lateral positions near +/-4 can also clip it.
+    The entire object is not always visible, and there is no zoom/pan control.
+    The fixed range is inherited from the original, but the new numeric
+    controls make these clipped scenes particularly easy to select.
+
+20. Individual source-download links do not provide a runnable bundle
+    (delivery/UI limitation). The footer offers HTML, app.js and style.css,
+    but omits the imported geometry.js module and favicon.svg. The downloaded
+    HTML also depends on relative file names and must be served over HTTP
+    for native modules. Downloading only those offered files is insufficient.
+    Downloading the complete repository and following its README does work.
+
+21. Displayed rounded image coordinates do not reproduce the full-precision
+    recovered values exactly (numeric presentation limitation). The table
+    rounds u to five decimal places but computes depth from unrounded u.
+    In the far-distance case it shows u=-0.00069; using that displayed value
+    gives 0.01/0.00069=14.49275, while the app displays 14.500. This difference
+    is rounding, not an inverse-formula error, but the precision relationship
+    is unexplained and matters for independently checking the measurements.
+
+WHAT ACTUALLY WORKS
+
+1. The app loads and runs in a normal JavaScript browser without Mathematica,
+   API keys or package installation. The local static-server test produced
+   both views, controls, measurements and source links. No console warnings
+   or errors were captured during the exercised local scenes.
+
+2. The default scene matches the source defaults: center (3,-0.2), theta=0,
+   laser offset 1, focal length 0.5 and the 1-by-4 rectangular footprint.
+   Visual inspection showed the camera, two lasers, cuboid and object handle.
+
+3. Actual pointer dragging works. Case 12 moved the handle and updated
+   the cuboid, the numeric position controls, rays and measured depths.
+   This is observed interaction, not just the presence of a pointer handler.
+
+4. The object rotation control changes the top-view cuboid and camera
+   projection. Whole-value setting and slider operation support positive and
+   negative angles. Cases 2-5 exercised several rotations; typing has the
+   separate failure documented in fault 7.
+
+5. Laser-spacing and focal-length controls respond, with source ranges
+   0.1 through 2. Keyboard Right incremented both sliders by 0.01, and the
+   companion number fields updated. Minima and maxima were exercised.
+
+6. Reset scene works. After changed controls and presets, it restored
+   z=3, x=-0.2, theta=0, s=1 and lambda=0.5 and the default outputs.
+
+7. All three test-scene buttons work and produce their intended inputs:
+   a 30-degree front face, one missing laser, and a 90-degree narrow footprint.
+   They make the documented cases reproducible without manually changing
+   every parameter.
+
+8. The nearest forward laser intersection calculation works for the
+   independently checked valid scenes. All 990 tested rays matched the
+   analytical oriented-box calculation, including misses and rotated objects.
+   This finding is limited to the tested grid and ideal geometric model.
+
+9. Default axial depths are correct: the center is at 3 and the front
+   face is 0.5 closer, so both laser depths are 2.5, not 3. This distinction
+   between center depth and surface depth is correctly preserved.
+
+10. The mirrored horizontal pinhole projection is correct in the tested
+    in-frame cases: u=-lambda*x/z gives -0.2 for the +1 laser and +0.2 for
+    the -1 laser at depth 2.5 and lambda=0.5. The two red dots appear on
+    the corresponding opposite image sides.
+
+11. Focal-length scaling works. Case 7 doubled lambda and doubled the
+    magnitudes of u, widened the projected object and narrowed the top-view
+    field-of-view cone, while leaving physical intersection depths unchanged.
+
+12. Recovering depth from full-precision simulated u works: z=-lambda*x/u.
+    Default and tilted cases recover their forward intersection depths. The
+    independent tests also checked recovery for every nonmissing grid hit.
+    This is mathematical consistency, not a validation with external sensor data.
+
+13. The shared-face angle calculation works when its assumption is satisfied.
+    At theta=+30 it gives +30; at theta=-30 it gives -30; default parallel
+    face gives 0. The +/-30 results agree with closed-form face equations.
+
+14. One-hit and zero-hit states are handled correctly in the tested presets.
+    The app shows No hit, em dashes for unavailable readings, a useful status
+    message and Unavailable angle. It does not invent a finite second distance
+    or show a NaN angle in these cases.
+
+15. The camera graphic places in-frame red spots, a vanishing point and
+    distance ticks at the expected horizontal positions. For example, with
+    s=1 and lambda=0.5, depth 2.5 corresponds to |u|=0.2, between the depth-2
+    and depth-3 ticks. Tick readability and vertical shape scaling have the
+    separate limitations already listed.
+
+16. Numeric controls and sliders synchronize on committed whole-value
+    changes. The table, measurement cards and status update without a page
+    reload. Range clamping prevents unlimited depth/focal-length values,
+    although its communication and draft-input behavior are faulty.
+
+17. Basic responsive layout works: at the tested mobile size, panels stack,
+    numeric controls remain operable, and no horizontal page overflow was
+    observed. This does not mean the scaled SVG annotations are mobile-readable.
+
+18. The project supplies readable standalone source, the preserved original
+    notebook, attribution, reproduction instructions, screenshot evidence and
+    an independent verification script. These make the conversion inspectable
+    and allow another person to repeat the investigation.
+
+EVIDENCE AND REPRODUCTION
+evidence/default-app.jpg - default desktop scene.
+evidence/cross-face-angle.jpg - misleading 60-degree scene output.
+evidence/out-of-frame.jpg - camera image with no observable red dots.
+evidence/camera-inside-object.jpg - camera-plane rendering failure.
+evidence/reticule-crowding.jpg - distance labels at small s and lambda.
+evidence/mobile.jpg - full mobile layout.
+evidence/browser-observations.json - recorded browser observations.
+evidence/geometry-check.txt - independent numerical verification output.
+
+The report is plain text. Screenshots support it but are not required to read
+its enumerated faults and working features. Findings cover the exercised cases;
+they do not claim exhaustive testing of every continuous parameter combination,
+browser, device or real optical system. No claim is made that a student
+personally performed the AI's recorded tests.

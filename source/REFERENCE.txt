@@ -1,0 +1,25 @@
+Assigned demonstration:
+https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/
+
+Title: Measuring Distance and Orientation Using Camera and Lasers
+Authors: Shiva Shahrokhi and Aaron T. Becker
+Year: 2016
+
+The original.nb file was downloaded on September 30, 2026 using the source-notebook link exposed on the demonstration page:
+https://www.wolframcloud.com/download/1980706a-68a8-4075-9ac2-84a97568169e?extension=always&filename=Demonstration-Measuring-Distance-and-Orientation-Using-Camera-and-Lasers-1-0-0-definition
+
+The page identifies the open content as CC BY-NC-SA:
+https://www.wolfram.com/legal/terms/wolfram-demonstrations-project.html
+
+Source features used for comparison:
+Default movable center p={3,-1/5}; theta=0; laser offset s=1; focal length lambda=.5.
+Cuboid footprint corners={(-.5,-2),(.5,-2),(.5,2),(-.5,2)}, rotated and translated.
+Laser rays start at (0,s) and (0,-s) in the depth/lateral top view.
+Nearest intersection with the four polygon edges is selected.
+Convert3DtoCam uses lambda/Max[.001,z] times {-x,y}.
+s and lambda controls each range from .1 to 2 in .01 increments.
+Top-view range is depth -1 to 15, lateral -4 to 4.
+Camera-image bounds are u=-.8 to .8 and v=-.4 to .4.
+The original includes an orientation dial, angle arc, s/lambda dimension annotations, a perspective floor grid, and adaptive reticule scaling.
+
+This conversion implements the geometry directly in JavaScript; it does not run Mathematica or claim numerical equivalence in every singular configuration.
