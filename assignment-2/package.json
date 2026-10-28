@@ -1,0 +1,9 @@
+{
+  "name": "camera-laser-robotics-assignment-2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node verify.mjs",
+    "test:browser": "node browser-tests.mjs"
+  }
+}

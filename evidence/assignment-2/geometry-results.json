@@ -1,0 +1,14 @@
+{
+  "rayChecks": 20560,
+  "validFaceTilts": 748,
+  "clippedFaces": 12100,
+  "storedWolframSpotChecks": 8,
+  "maxStoredWolframError": 0.0000011434360552599332,
+  "freshLiveWolframScenes": 4,
+  "freshSpotChecks": 8,
+  "maxFreshSpotError": 0.0000011434360552599332,
+  "maxFreshRadiusError": 4.547166458472585e-9,
+  "maxFreshFaceError": 0.0000010205692925757681,
+  "closedFormAndRegressionChecks": "passed",
+  "limitations": "Finite deterministic sample. Stored September 30 observations and fresh October 28 live-browser comparisons are separate evidence; neither is a desktop Mathematica kernel execution."
+}

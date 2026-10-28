@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="An interactive robotics demonstration of distance and face inclination measured using a pinhole camera and two parallel lasers. Validated JavaScript adaptation of the Wolfram demonstration.">
+  <title>Camera & Laser Geometry Lab · Assignment 2</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#controls">Skip to scene controls</a>
+  <header>
+    <div class="eyebrow">ROBOTICS LAB <span>ASSIGNMENT 2</span></div>
+    <h1>Measure with light.</h1>
+    <p class="intro">Explore how a camera and two parallel lasers reveal a surface’s distance and tilt. Move the cuboid, change the optics, and follow the geometry.</p>
+    <div class="headerlinks"><a href="https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/" target="_blank" rel="noopener">Original Wolfram demonstration ↗</a><a href="report.txt">Final evaluation (.txt)</a></div>
+  </header>
+
+  <section class="live-summary" aria-label="Live camera measurements">
+    <div><span>Left laser · +s</span><strong id="leftDepth">—</strong></div>
+    <div><span>Right laser · −s</span><strong id="rightDepth">—</strong></div>
+    <div><span>Measured face tilt</span><strong id="estimate">—</strong></div>
+  </section>
+  <main>
+    <aside class="panel controls" aria-labelledby="controls-title">
+      <div class="sectionhead"><span class="step">01</span><h2 id="controls-title">Set the scene</h2></div>
+      <p class="hint">Drag the object in the top view, or enter exact values below. Press Enter or leave a field to apply it; Escape cancels an edit.</p>
+      <div id="controls"></div>
+      <div class="dial-row"><svg id="dial" viewBox="0 0 120 120" role="slider" tabindex="0" aria-label="Original orientation dial" aria-valuemin="-180" aria-valuemax="180" aria-valuenow="0"></svg><p class="hint">The original dial snaps by <strong>π/32 = 5.625°</strong>.<br>Drag it, or use arrow keys. Exact degree entry also supports other angles.<br><span id="radians"></span></p></div>
+      <div class="sensor"><label for="resolution">Camera sampling check</label><select id="resolution"><option value="640">640 pixels (default)</option><option value="320">320 pixels</option><option value="1280">1280 pixels</option><option value="0">Ideal geometry (original model)</option></select><p class="hint">The sampling check withholds measurements when spots overlap or are less than one pixel apart. This is a display-based check, not a calibrated camera model.</p></div>
+      <button id="reset" class="primary" type="button">Reset scene</button>
+      <details class="scenes" open><summary>Explore a test scene</summary><div class="preset-grid">
+        <button type="button" data-preset="tilted">Tilted face</button><button type="button" data-preset="negative">Negative tilt</button><button type="button" data-preset="crossed">Different faces</button><button type="button" data-preset="miss">One miss</button><button type="button" data-preset="edge">Two misses</button><button type="button" data-preset="outside">Outside image</button><button type="button" data-preset="overlap">Overlapping spots</button><button type="button" data-preset="halfturn">Half turn</button>
+      </div></details>
+      <div class="actions"><button id="share" type="button">Copy scene link</button><button id="export" type="button">Export exact readings</button></div>
+      <p id="notice" class="hint" role="status"></p>
+    </aside>
+
+    <section class="workspace" aria-label="Interactive visualizations">
+      <div id="status" class="status" role="status"></div>
+      <div class="panel plot">
+        <div class="plothead"><div class="sectionhead"><span class="step">02</span><h2>Top view</h2></div><span class="tag">WORLD GEOMETRY</span></div>
+        <svg id="top" role="group" aria-label="Top view of the camera, parallel lasers and draggable rotated cuboid"></svg>
+        <div class="legend"><span><i class="camera-key"></i>Camera & field of view</span><span><i class="laser-key"></i>Lasers</span><span><i class="object-key"></i>Cuboid</span></div>
+        <p class="hint">Axes use the same scale. The view fits the complete object automatically. Focus the object handle and use arrow keys to move it (Shift for larger steps).</p>
+      </div>
+      <div class="panel plot">
+        <div class="plothead"><div class="sectionhead"><span class="step">03</span><h2>Camera image</h2></div><label class="zoom-label" for="zoom">View <select id="zoom"><option value="1">1× original bounds</option><option value="2">2× crop</option><option value="4">4× crop</option><option value="8">8× crop</option></select></label></div>
+        <svg id="camera" role="img" aria-label="Equal-scale pinhole camera image with a perspective floor, distance reticule and laser spots"></svg>
+        <p class="hint" id="image-note"></p>
+      </div>
+      <div class="panel readings">
+        <div class="sectionhead"><span class="step">04</span><h2>Inspect the measurements</h2></div>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Laser readings table, scroll horizontally if needed"><table><thead><tr><th scope="col">Laser</th><th scope="col">Geometric z</th><th scope="col">Image u</th><th scope="col">Camera z</th><th scope="col">Status</th></tr></thead><tbody id="readings"></tbody></table></div>
+        <p class="hint">Geometric z is the simulated axial depth to a surface, not the object-center depth or the slant distance from the camera. Camera z is recovered only from usable image spots. Hover over a number or export the readings for full precision.</p>
+        <p class="inference">Face tilt is an undirected inclination, modulo 180°. It cannot distinguish the cuboid’s symmetric orientations and is shown only when two usable hits share one face.</p>
+      </div>
+      <details class="panel explanation" open>
+        <summary>How the measurement works</summary>
+        <div class="formula-grid"><div><span>PROJECT A HIT</span><p>u = −λx / z</p><small>The pinhole mirrors the lateral position.</small></div><div><span>RECOVER ITS DEPTH</span><p>z = −λx / u</p><small>The laser is at x = +s or x = −s.</small></div><div><span>INFER FACE TILT</span><p>atan2(z<sub>right</sub> − z<sub>left</sub>, 2s)</p><small>Two visible, separate hits on the same planar face.</small></div></div>
+        <p class="hint">The cuboid is 1 unit deep, 4 wide and 2 high. Its center is (z, x); the camera is at z = 0, midway between the lasers. The total laser separation is 2s. All lengths use consistent arbitrary units. The image follows the original convention u = −λx/z, v = λy/z, with bounds ±0.8 horizontally and ±0.4 vertically.</p>
+        <p class="hint">Reticule signs match the original image-side convention: negative labels at negative u and positive labels at positive u. Both lasers’ physical forward depths are positive. The perspective floor is at y = −1. “Ideal geometry” uses exact ray coordinates, as the original does; it does not simulate camera noise or infer a pose from real photographs.</p>
+      </details>
+    </section>
+  </main>
+  <footer><p>Adapted with OpenAI Codex from <a href="https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/">Measuring Distance and Orientation Using Camera and Lasers</a>, by Shiva Shahrokhi and Aaron T. Becker (2016). Original geometry, projection convention and calibration ranges retained; validation and interaction improved.</p><p><a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a> · <a href="source.zip" download>Download complete source</a> · <a href="https://github.com/Amanamin2k6/camera-laser-robotics-conversion/tree/codex/assignment-2/assignment-2">Code & tests</a> · <a href="../camera-laser-app/dist/">Preserved Assignment 1 app</a> · <a href="report.txt" download>Submission text file</a></p></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

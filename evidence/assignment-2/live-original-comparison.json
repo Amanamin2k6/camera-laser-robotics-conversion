@@ -1,0 +1,217 @@
+{
+  "date": "2026-10-28",
+  "method": "Operated live Wolfram focal/spacing sliders and orientation dial; waited for settled rendered SVG; compared with final app in a separate browser page. Ideal mode selected for minimum and rotated scenes to compare original mathematical output.",
+  "cases": [
+    {
+      "name": "default",
+      "original": {
+        "spots": [
+          {
+            "u": -0.2,
+            "relativeRadius": 0.02
+          },
+          {
+            "u": 0.2,
+            "relativeRadius": 0.02
+          }
+        ],
+        "firstFaceAspectRatio": 2
+      },
+      "final": {
+        "spots": [
+          {
+            "u": -0.2,
+            "relativeRadius": 0.02
+          },
+          {
+            "u": 0.2,
+            "relativeRadius": 0.02
+          }
+        ],
+        "firstFaceAspectRatio": 2.000000121342259
+      },
+      "controls": [
+        1,
+        0.5
+      ]
+    },
+    {
+      "name": "maximum focal length",
+      "original": {
+        "spots": [
+          {
+            "u": -0.8,
+            "relativeRadius": 0.08
+          },
+          {
+            "u": 0.8,
+            "relativeRadius": 0.08
+          }
+        ],
+        "firstFaceAspectRatio": 2
+      },
+      "final": {
+        "spots": [
+          {
+            "u": -0.8,
+            "relativeRadius": 0.08
+          },
+          {
+            "u": 0.8,
+            "relativeRadius": 0.08
+          }
+        ],
+        "firstFaceAspectRatio": 2
+      },
+      "controls": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "minimum calibration",
+      "original": {
+        "spots": [
+          {
+            "u": -0.004,
+            "relativeRadius": 0.004
+          },
+          {
+            "u": 0.004,
+            "relativeRadius": 0.004
+          }
+        ],
+        "firstFaceAspectRatio": 2
+      },
+      "final": {
+        "spots": [
+          {
+            "u": -0.004000000000000001,
+            "relativeRadius": 0.004000000000000001
+          },
+          {
+            "u": 0.004000000000000001,
+            "relativeRadius": 0.004000000000000001
+          }
+        ],
+        "firstFaceAspectRatio": 2.000000606711442
+      },
+      "controls": [
+        0.1,
+        0.1
+      ]
+    },
+    {
+      "name": "rotation at original dial step 50.625 degrees",
+      "original": {
+        "spots": [
+          {
+            "u": -0.005415111111111199,
+            "relativeRadius": 0.00541625
+          },
+          {
+            "u": 0.004785777777777791,
+            "relativeRadius": 0.0047847
+          }
+        ],
+        "firstFaceAspectRatio": 0.12588450482762747
+      },
+      "final": {
+        "spots": [
+          {
+            "u": -0.0054162545471664585,
+            "relativeRadius": 0.0054162545471664585
+          },
+          {
+            "u": 0.00478470038694603,
+            "relativeRadius": 0.00478470038694603
+          }
+        ],
+        "firstFaceAspectRatio": 0.5905082818346706
+      },
+      "controls": [
+        0.1,
+        0.1
+      ]
+    }
+  ],
+  "rotatedFaces": {
+    "original": [
+      [
+        [
+          -0.08216536458333333,
+          -0.05645865885416667
+        ],
+        [
+          -0.08216536458333333,
+          0.05645865885416667
+        ],
+        [
+          -0.06001779513888889,
+          0.08796763780381944
+        ],
+        [
+          -0.06001779513888889,
+          -0.0879679904513889
+        ]
+      ],
+      [
+        [
+          -0.06001779513888889,
+          -0.0879679904513889
+        ],
+        [
+          -0.06001779513888889,
+          0.08796763780381944
+        ],
+        [
+          0.043871961805555554,
+          0.023648003472222224
+        ],
+        [
+          0.043871961805555554,
+          -0.023648003472222224
+        ]
+      ]
+    ],
+    "final": [
+      [
+        [
+          -0.06001864787835487,
+          -0.08796755599217197
+        ],
+        [
+          -0.06001864787835487,
+          0.08796758026062376
+        ],
+        [
+          0.04387250714463221,
+          0.023647227960362824
+        ],
+        [
+          0.04387250714463221,
+          -0.023647227960362824
+        ]
+      ],
+      [
+        [
+          -0.0821653089276839,
+          -0.056459679423459246
+        ],
+        [
+          -0.0821653089276839,
+          0.056459679423459246
+        ],
+        [
+          -0.06001864787835487,
+          0.08796758026062376
+        ],
+        [
+          -0.06001864787835487,
+          -0.08796755599217197
+        ]
+      ]
+    ]
+  },
+  "caveats": "Per-face array order differs because the final renderer sorts by depth. Compare the sets of normalized vertices, not first-polygon aspect ratios. Original SVG coordinates are rounded."
+}

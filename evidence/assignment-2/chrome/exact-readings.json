@@ -1,0 +1,65 @@
+{
+  "state": {
+    "z": 15,
+    "x": 0,
+    "angle": 0,
+    "s": 0.1,
+    "f": 0.1,
+    "resolution": 0
+  },
+  "view": {
+    "zoom": 1
+  },
+  "geometry": {
+    "points": [
+      [
+        14.5,
+        -2
+      ],
+      [
+        15.5,
+        -2
+      ],
+      [
+        15.5,
+        2
+      ],
+      [
+        14.5,
+        2
+      ]
+    ],
+    "left": {
+      "z": 14.5,
+      "x": 0.1,
+      "faces": [
+        3
+      ],
+      "u": -0.0006896551724137933,
+      "inFrame": true,
+      "recovered": 14.5,
+      "status": "Visible"
+    },
+    "right": {
+      "z": 14.5,
+      "x": -0.1,
+      "faces": [
+        3
+      ],
+      "u": 0.0006896551724137933,
+      "inFrame": true,
+      "recovered": 14.5,
+      "status": "Visible"
+    }
+  },
+  "measurement": {
+    "validScene": true,
+    "faceTiltDegrees": 0,
+    "sharedFaces": [
+      3
+    ],
+    "separationPixels": 0,
+    "reason": "Two usable hits on one face"
+  },
+  "convention": "u=-f*x/z; v=f*y/z; depths are forward axial distances; tilt is modulo 180 degrees"
+}

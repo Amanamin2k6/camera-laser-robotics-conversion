@@ -1,0 +1,252 @@
+ASSIGNMENT 2 - IMPROVED ROBOTICS WEB DEMONSTRATION
+Measuring Distance and Orientation Using Camera and Lasers
+Implementation and testing: OpenAI Codex, October 28, 2026
+
+1. FINAL APPLICATION AND CODE
+
+Final application:
+https://amanamin2k6.github.io/camera-laser-robotics-conversion/assignment-2/
+
+Code, mathematical verification and browser tests:
+https://github.com/Amanamin2k6/camera-laser-robotics-conversion/tree/codex/assignment-2/assignment-2
+
+Complete runnable source download:
+https://amanamin2k6.github.io/camera-laser-robotics-conversion/assignment-2/source.zip
+
+This text submission:
+https://amanamin2k6.github.io/camera-laser-robotics-conversion/assignment-2/report.txt
+
+Original demonstration by Shiva Shahrokhi and Aaron T. Becker (2016):
+https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/
+
+The Assignment 1 application remains available for comparison:
+https://amanamin2k6.github.io/camera-laser-robotics-conversion/camera-laser-app/dist/
+
+The final application runs in a modern browser without Mathematica, a Wolfram
+account, API keys, a framework or a build step. Local source must be served
+over HTTP; the source bundle includes a small Node server and instructions.
+Original and adapted content are attributed under CC BY-NC-SA 3.0.
+
+WHAT WAS IMPROVED AND HOW IT WAS VALIDATED
+
+This is an engineering revision of the original conversion, not a repeat of
+its fault report. The geometry was checked against the actual Mathematica
+notebook. Input handling, measurement validity, rendering and interaction
+were revised, then tested by operating the final browser application.
+
+The retained model uses a 1-deep, 4-wide, 2-high cuboid; its rotated center is
+(z,x). The camera is at z=0 and lasers start at lateral positions +s and -s,
+so their separation is 2s. Projection is u=-lambda*x/z, v=lambda*y/z. The
+sensor image bounds are u=+/-0.8 and v=+/-0.4. Distances are forward axial
+depths to surface intersections, not object-center or camera slant distances.
+
+Testing performed on the final implementation:
+
+1. 20,560 laser rays were compared with an independent ray/box slab algorithm
+   in cuboid-local coordinates. Hit/miss results and depths agreed within
+   1e-8 units. The grid includes original pi/32 angles, additional +/-30 and
+   +/-60 degree cases, near-camera scenes, calibration extremes and 2,000
+   deterministic randomized scenes. These are calculation checks, not
+   20,560 live-Wolfram comparisons.
+
+2. 748 usable common-face angle results were checked against analytical face
+   inclinations. 12,100 projected face polygons were checked for finite
+   coordinates and correct image clipping. Additional closed-form and
+   regression checks cover defaults, +/-30 degrees, focal scaling, two
+   misses, different faces, half-turn symmetry, image boundaries, invalid
+   camera-plane configurations, spot overlap and adaptive calibration.
+
+3. 32 browser cases passed in Chrome and the same 32 passed in Edge. Controls
+   were actually operated: character-by-character typing, Enter/blur/Escape,
+   keyboard sliders, mouse dragging, dial rotation, presets, JSON download,
+   scene-link copying and clipboard-denial fallback. Mobile tests used
+   390x844 touch emulation, plus 320- and 768-pixel viewport checks. Touch
+   dragging and keyboard movement worked; there was no page-level horizontal
+   overflow. No application exceptions or failed application assets occurred
+   during these cases. The detailed table scrolls within its own container.
+
+4. Four fresh paired comparisons were performed against the actual live
+   Wolfram demonstration: defaults, maximum focal length, minimum calibration,
+   and a 50.625-degree original-dial rotation. The original sliders and dial
+   were operated and settled SVG output was inspected. All eight normalized
+   spot positions agreed within 0.00000115 image units. Relative spot radii
+   agreed within 0.000000005 of image width. Rotated face vertices agreed
+   within 0.00000103 image units. Original SVG rounding limits these figures.
+   The default projected face is 2:1 in both versions, fixing the Assignment 1
+   distortion. Ideal mode was selected for comparisons whose spots overlap.
+
+5. Eight spot coordinates from the earlier stored live-Wolfram observations
+   were also checked independently. These historical observations are kept
+   separate from the four fresh comparisons. Desktop Mathematica and real
+   camera/laser hardware were not executed or tested.
+
+Evidence and reproducible tests are in the repository:
+- assignment-2/verify.mjs
+- assignment-2/browser-tests.mjs
+- evidence/assignment-2/geometry-results.json
+- evidence/assignment-2/chrome/browser-results.json
+- evidence/assignment-2/edge/browser-results.json
+- evidence/assignment-2/live-original-comparison.json
+- evidence/assignment-2/chrome/ (screenshots and exact JSON readings)
+
+2. ENUMERATED LIST OF ALL IDENTIFIED REMAINING FAULTS / LIMITATIONS
+
+1. Full object orientation remains unobservable from these two measurements.
+   In the tested 180-degree scene, the two depths are 4.500 and the measured
+   face inclination is 0 degrees, just as at 0 degrees. This is a symmetry
+   limitation of the measurement setup, not an incorrect angle calculation.
+   The interface now explicitly labels the result as face tilt modulo 180
+   degrees and does not claim to recover the full signed object pose.
+
+2. The sampling check is approximate rather than a physical camera model.
+   It checks original-style circular spot overlap and one-pixel center
+   separation at the selected resolution. It does not simulate image noise,
+   lens distortion, finite laser divergence, intensity, calibration error,
+   occlusion by other objects, centroid extraction or measurement uncertainty.
+   For example, the far-distance scene is conservatively rejected as
+   unresolved; this does not establish an actual camera's detection limit.
+   The app describes this limitation and offers an explicitly labeled ideal
+   geometry mode for comparison with the original.
+
+3. Field-of-view validity uses the spot center. At the tested maximum focal
+   length, the default spot centers lie exactly at u=+/-0.8 and remain usable
+   under the ideal point-projection rule, although each drawn circular marker
+   is partly clipped by the image boundary. Real recovery from a partially
+   imaged spot may be biased or impossible. The final app has no separate
+   uncertainty model for that partial-spot case.
+
+4. Extremely small spots and dense reticule detail cannot all be inspected
+   simultaneously at normal size. At small s and lambda, or large depth,
+   spots are small by the original model and some tick labels would collide.
+   The final renderer culls overlapping labels and offers 2x/4x/8x image crops,
+   numeric readings and full-precision export. This improves readability but
+   deliberately shows fewer labels than the original in crowded scenes.
+
+5. The conversion is not a pixel-for-pixel copy of the Wolfram presentation.
+   Colors, typography and control layout differ. The top view fits the whole
+   object instead of retaining the original's fixed clipping window; crowded
+   labels are culled. Wolfram snapshot tabs, notebook-cloud integration and
+   Mathematica-specific authoring actions are not reproduced. The interactive
+   geometry and standalone source are provided instead.
+
+6. Calculations use JavaScript double-precision arithmetic rather than exact
+   symbolic arithmetic. Displayed measurements are also rounded. Normal
+   typed values are retained at JavaScript numeric precision; dragging is
+   rounded to six decimal places for usable controls. Full stored readings
+   are available on hover and through JSON export. Very close edge contacts
+   are resolved using numerical tolerances, so this is not an exact symbolic
+   treatment of every singular configuration.
+
+7. Validation is finite. Chrome and Edge were tested, including emulated
+   mobile touch, but Firefox, Safari, physical phones and assistive devices
+   were not independently tested. Keyboard operation and accessible labels
+   were checked, but a full screen-reader usability audit was not performed.
+   Real optics and desktop Mathematica were not tested. The reported test
+   results should not be read as universal equivalence or hardware accuracy.
+
+3. ENUMERATED LIST OF WHAT WORKS WELL IN THE FINAL VERSION
+
+1. Standalone web operation. The application loads and updates entirely in
+   the browser, without Mathematica or a remote calculation service.
+
+2. Correct defaults and dimensions. The default center (3,-0.2), orientation
+   0 degrees, offset s=1, focal length 0.5, and 1x4x2 cuboid match the source.
+
+3. Correct rotated geometry and nearest forward intersections. The independent
+   20,560-ray comparison validates hit/miss and depth over the tested scenes.
+
+4. Correct pinhole projection and calibration. Default image coordinates are
+   -0.2 and +0.2, with recovered surface depths 2.500. Changing focal length
+   scales image positions without changing the physical intersection depth.
+
+5. Correct image-axis proportions. Horizontal and vertical image coordinates
+   now use the same scale. The default front face has the correct 2:1 ratio,
+   including at mobile widths; the Assignment 1 ratio of 2.857 was fixed.
+
+6. Correct positive and negative same-face tilt. At center (5,0), theta=+30,
+   s=1 and lambda=0.5, depths are 3.845299 and 5.000000 and tilt is +30 degrees.
+   At -30 degrees, the depths swap and tilt is -30 degrees.
+
+7. Different-face rejection. At the former failing theta=60 scene, depths
+   remain correctly 3.267949 and 5.732051, but tilt is now Unavailable with
+   an explanation. The erroneous 50.94-degree chord estimate is not shown.
+   The student-observed (z,x)=(4,0), theta=50.625 case is also rejected instead
+   of presenting its 47.69-degree chord slope as valid face tilt.
+
+8. Visibility-aware camera readings. The out-of-frame scene retains its
+   geometric intersections in the table but withholds off-image camera depths
+   and tilt. The earlier false result based on u=+/-4 is fixed. A separate
+   student-style single-miss/off-image configuration also reports each status
+   correctly rather than treating its one off-image depth as usable.
+
+9. Clear handling of actual misses. One miss shows one valid depth and one
+   No hit; two misses show two No hit entries. Neither gives a tilt estimate.
+   Missed rays do not create the original's artificial z=10000 image dots.
+
+10. Explicit invalid-scene handling. A cuboid crossing or surrounding the
+    camera plane triggers a warning and no recovered camera measurements.
+    Visible face portions are clipped before projection, and projected
+    polygons remain finite and within the image. The former silent blank-face
+    or enormous unbounded near-plane projection is not treated as valid.
+
+11. Negative and decimal typing. Ordinary character-by-character entry of
+    -30, -1 and 0.75 preserves the requested sign and decimal value. Fields
+    retain draft text until Enter or blur, fixing the Assignment 1 input bug.
+
+12. Clear, safe input validation. Deleting a depth value does not move the
+    object. Entering 99 leaves the existing scene unchanged and explains the
+    valid range. Escape restores the previous value. Incomplete or invalid
+    drafts are not silently interpreted as zero or clamped into another scene.
+
+13. Consistent controls and exact entry. Numeric fields, sliders and geometry
+    agree at 50.625 degrees. Exact entries beyond six decimal places are also
+    retained. Calibration keys change s and lambda by 0.01; angle keys and
+    dial dragging use the original 5.625-degree increment.
+
+14. Usable object movement. Mouse dragging, emulated touch dragging and arrow
+    keys move the cuboid and update geometry, projection and readings. The
+    handle has an enlarged interaction target, visible focus and an accessible
+    label. Dragged positions avoid long uncontrolled floating-point strings.
+
+15. Original explanatory guides restored. The top view includes the angle
+    arc, orientation references, s and lambda dimension arrows, camera body,
+    image planes and field-of-view cone. The camera view includes the source's
+    projected floor grid, horizon cues and calibrated signed reticule.
+
+16. Faithful reticule and spot scaling. Reticule depth scales follow the
+    original piecewise lambda*s rule, with negative labels at negative u.
+    Adaptive label culling prevents the tested overlaps. Relative spot radii
+    match the fresh live-original comparison instead of the old incorrect
+    scaling or forced minimum-radius enlargement.
+
+17. Useful handling of unresolved spots. The default sampling check withholds
+    separate measurements and tilt when spots merge or become subpixel. Image
+    zoom does not falsely improve sensor validity. Ideal mode is explicitly
+    labeled and reproduces the original exact-coordinate calculation.
+
+18. Responsive feedback and layout. The live measurement strip stays visible
+    while scrolling. Tested 320-, 390- and 768-pixel layouts do not overflow
+    the page horizontally. The readings table scrolls within its own region.
+    Plot labels keep a useful screen-space size rather than shrinking with
+    the original fixed 800-unit drawing.
+
+19. Reproducible scene presets and links. Eight presets exercise useful and
+    failing configurations. Scene links preserve geometry, calibration,
+    sampling mode and view crop. Invalid URL parameters are identified and
+    replaced with defaults for those parameters. Reset restores every setting.
+
+20. Full-precision measurement export. JSON includes the exact stored scene,
+    intersections, image coordinates, visibility statuses and inference result.
+    Recomputing the far-scene inverse from the exported coordinate gives 14.5
+    rather than the old rounded-coordinate discrepancy of 14.49275.
+
+21. Clear educational explanation. The app identifies axial depth, total laser
+    separation 2s, mirrored projection, the same-face condition, orientation
+    ambiguity and the distinction between simulated geometry and usable
+    camera measurements. Warnings state why an estimate is unavailable.
+
+22. Complete source and evidence. The download contains the application,
+    geometry module, styles, icon, local server, verification scripts, original
+    Mathematica source, reference observations and final report. Attribution
+    and license links are included. The Assignment 1 application and its
+    reports remain preserved at their original paths for comparison.

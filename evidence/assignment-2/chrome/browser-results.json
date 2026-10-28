@@ -1,0 +1,140 @@
+{
+  "url": "http://127.0.0.1:4173/",
+  "channel": "chrome",
+  "browser": "156.0.8078.48",
+  "tests": [
+    {
+      "name": "T01: Load defaults and reset all scene/view controls",
+      "status": "PASS"
+    },
+    {
+      "name": "T02/T14: Correct projection and 2:1 cuboid image aspect ratio",
+      "status": "PASS"
+    },
+    {
+      "name": "T03: Maximum focal length keeps depths; spots reach sensor boundaries",
+      "status": "PASS"
+    },
+    {
+      "name": "T04/T22: Adaptive signed reticule, floor grid and nonoverlapping labels",
+      "status": "PASS"
+    },
+    {
+      "name": "T05: Maximum laser offset produces one true miss",
+      "status": "PASS"
+    },
+    {
+      "name": "T06/T07: Positive and negative 30-degree same-face recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "T08: Different-face hits no longer produce a false angle",
+      "status": "PASS"
+    },
+    {
+      "name": "T09: Half-turn result is explicitly face inclination modulo 180 degrees",
+      "status": "PASS"
+    },
+    {
+      "name": "T10/T11: One and two misses have no spurious image dots or angle",
+      "status": "PASS"
+    },
+    {
+      "name": "T12: Off-image intersections cannot supply camera depth or angle",
+      "status": "PASS"
+    },
+    {
+      "name": "T12 alternate: Student single-hit configuration reports no-hit and off-image separately",
+      "status": "PASS"
+    },
+    {
+      "name": "T13: Camera/object overlap is flagged; measurements are withheld",
+      "status": "PASS"
+    },
+    {
+      "name": "T13 clipping: Partial near-plane faces remain finite and bounded",
+      "status": "PASS"
+    },
+    {
+      "name": "T16: Character-by-character negative entry preserves the draft and requested sign",
+      "status": "PASS"
+    },
+    {
+      "name": "T17: Character-by-character decimal focal entry becomes exactly 0.75",
+      "status": "PASS"
+    },
+    {
+      "name": "T17 alternate: Decimal angle entry has no cursor jump or digit corruption",
+      "status": "PASS"
+    },
+    {
+      "name": "T18: Empty and invalid drafts preserve the prior scene; Escape restores the value",
+      "status": "PASS"
+    },
+    {
+      "name": "T18: Out-of-range entry is explained and never silently clamped",
+      "status": "PASS"
+    },
+    {
+      "name": "T19: Exact 50.625-degree entry agrees with slider; different-face angle is rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "Exact entry preserves precision beyond six decimal places",
+      "status": "PASS"
+    },
+    {
+      "name": "T19: Slider keyboard steps match calibration and original angular increments",
+      "status": "PASS"
+    },
+    {
+      "name": "T15: Mouse drag changes the scene; handle remains keyboard accessible",
+      "status": "PASS"
+    },
+    {
+      "name": "Original dial: Pointer and keyboard select pi/32 steps",
+      "status": "PASS"
+    },
+    {
+      "name": "T20: Overlapping far spots are withheld in sampling mode; ideal mode is explicit",
+      "status": "PASS"
+    },
+    {
+      "name": "T21: Exact JSON export reproduces inverse depth without rounded-table mismatch",
+      "status": "PASS"
+    },
+    {
+      "name": "T24: Entire cuboid fits at allowed depth/lateral extremes",
+      "status": "PASS"
+    },
+    {
+      "name": "Scene links load exact values and reject invalid query parameters safely",
+      "status": "PASS"
+    },
+    {
+      "name": "Share button supplies a reproducible scene URL",
+      "status": "PASS"
+    },
+    {
+      "name": "Share denial provides an ordinary reproducible-link fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "T25: 390px mobile layout, readable plot text, sticky results and touch drag",
+      "status": "PASS"
+    },
+    {
+      "name": "T25: 320px and 768px widths have no page-level horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "No application exceptions or failed assets during browser cases",
+      "status": "PASS"
+    }
+  ],
+  "pass": 32,
+  "fail": 0,
+  "pageErrors": [],
+  "failedRequests": [],
+  "limits": "chrome headless; mobile is emulated touch, not a physical phone."
+}
