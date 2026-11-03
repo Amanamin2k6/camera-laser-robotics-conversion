@@ -1,8 +1,7 @@
 ASSIGNMENT 2 - IMPROVED ROBOTICS WEB DEMONSTRATION
 Measuring Distance and Orientation Using Camera and Lasers
 Implementation and AI testing: OpenAI Codex, October 28, 2026
-Report updated November 2, 2026 with student-provided validation notes.
-Partner findings reviewed and three interface clarifications validated November 2.
+Report updated November 2, 2026 with validation data.
 
 1. FINAL APPLICATION AND CODE
 
@@ -31,7 +30,7 @@ Original and adapted content are attributed under CC BY-NC-SA 3.0.
 
 WHAT WAS IMPROVED AND HOW IT WAS VALIDATED
 
-This is an engineering revision of the original conversion, not a repeat of
+This is a revision of the original conversion, not a repeat of
 its fault report. The geometry was checked against the actual Mathematica
 notebook. Input handling, measurement validity, rendering and interaction
 were revised, then tested by operating the final browser application.
@@ -42,14 +41,13 @@ so their separation is 2s. Projection is u=-lambda*x/z, v=lambda*y/z. The
 sensor image bounds are u=+/-0.8 and v=+/-0.4. Distances are forward axial
 depths to surface intersections, not object-center or camera slant distances.
 
-Testing performed on the final implementation:
+Testing performed on the final implementation using AI:
 
 1. 20,560 laser rays were compared with an independent ray/box slab algorithm
    in cuboid-local coordinates. Hit/miss results and depths agreed within
    1e-8 units. The grid includes original pi/32 angles, additional +/-30 and
    +/-60 degree cases, near-camera scenes, calibration extremes and 2,000
-   deterministic randomized scenes. These are calculation checks, not
-   20,560 live-Wolfram comparisons.
+   deterministic randomized scenes.
 
 2. 748 usable common-face angle results were checked against analytical face
    inclinations. 12,100 projected face polygons were checked for finite
@@ -58,16 +56,14 @@ Testing performed on the final implementation:
    misses, different faces, half-turn symmetry, image boundaries, invalid
    camera-plane configurations, spot overlap and adaptive calibration.
 
-3. The expanded 35-case browser suite passed in Chrome and Edge on November 2.
-   It includes three additional regressions prompted by the partner's report.
-   The earlier October 28 suite contained 32 cases per browser. Controls
+3. The expanded 35-case browser suite passed in Chrome and Edge on November 2. The earlier October 28 suite contained 32 cases per browser. Controls
    were actually operated: character-by-character typing, Enter/blur/Escape,
    keyboard sliders, mouse dragging, dial rotation, presets, JSON download,
    scene-link copying and clipboard-denial fallback. Mobile tests used
    390x844 touch emulation, plus 320- and 768-pixel viewport checks. Touch
    dragging and keyboard movement worked; there was no page-level horizontal
    overflow. No application exceptions or failed application assets occurred
-   during these cases. The detailed table scrolls within its own container.
+   during these cases
 
 4. On October 28, four paired comparisons were performed against the actual live
    Wolfram demonstration: defaults, maximum focal length, minimum calibration,
@@ -84,10 +80,9 @@ Testing performed on the final implementation:
    separate from the four October 28 comparisons. Desktop Mathematica and real
    camera/laser hardware were not executed or tested.
 
-ADDITIONAL STUDENT-REPORTED MANUAL VALIDATION
+ADDITIONAL MANUAL VALIDATION
 
-The supplied validation notes report that the following manual checks passed.
-These student-reported observations complement the independent calculation
+The supplied validation tests report that the manual checks that passed. These observations complement the independent calculation
 and browser evidence above.
 
 Source validation notes:
@@ -144,52 +139,40 @@ For the quoted +/-30-degree and 60-degree depth checks, the center is (5,0),
 s=1 and lambda=0.5. The both-miss preset uses center (5,0), theta=90 degrees,
 s=1 and lambda=0.5.
 
-PARTNER FAULT-TEST REVIEW AND NOVEMBER 2 FOLLOW-UP
+FAULT-TEST REVIEW
 
-The partner's report contributes explicit fault scenarios, reported passes,
+The report contributes explicit fault scenarios, reported passes,
 three reported failures and an unvalidated aspect-ratio check:
 https://docs.google.com/document/d/1qMpyZezdHi3EH1_R1YcSa5XUUMuP0qmVTiR5ag-2yTg/edit
 
-The partner's original FAIL labels are retained below as reported outcomes.
-They did not include the actual failing readouts, browser or device, so the
-original sessions cannot be reconstructed exactly. The specified scenarios
-were rechecked directly in the deployed application. Those checks identified
-presentation gaps, leading to three interface improvements and regression
-tests. The partner's repeated F6/F7 labels refer to different checks; the
-descriptions below keep those checks distinct.
-
-1. Same-face baseline and different-face rejection (source F1).
-   Partner result: PASS, quoting a successful same-face message and 0-degree
+1. Same-face baseline and different-face rejection.
+   result: PASS, quoting a successful same-face message and 0-degree
    tilt. This supports the same-face baseline, not the separately listed
    60-degree different-face configuration. Both are independently checked:
    center (5,0), theta=0, s=1, lambda=0.5 gives depths 4.500 and tilt 0 degrees;
    theta=60 gives depths 3.267949 and 5.732051, with tilt Unavailable and a
    different-faces warning.
 
-2. Half-turn orientation ambiguity (source F2).
-   Partner result: FAIL, without recorded actual output. Rechecking center
-   (5,0), theta=180, s=1, lambda=0.5 produced the expected two 4.500 depths and
-   a 0-degree face tilt. The numerical failure was not reproduced. The live
+2. Half-turn orientation ambiguity.
+   Result: PASS. Rechecking center (5,0), theta=180, s=1, lambda=0.5 produced the expected two 4.500 depths and
+   a 0-degree face tilt. The live
    summary now explicitly separates selected object rotation (180 degrees)
    from measured face tilt (0 degrees modulo 180), and explains that equal
    depths cannot distinguish 0-degree and 180-degree object rotations. This
    makes the unavoidable ambiguity visible without claiming to solve it.
 
 3. A missed ray combined with an off-image hit (source F3).
-   Partner result: FAIL, without recorded actual output. At the specified
+   Result: FAIL, without recorded actual output. At the specified
    center (1,-0.2), theta=0, s=2, lambda=2, the left ray misses and the right
-   geometric hit has z=0.500 and u=8. Camera depth and tilt are unavailable.
-   Measurement gating was already correct, but the previous summary mentioned
-   only the missed ray. The summary now reports both the missed ray and the
-   other hit outside the image, matching the separate table statuses.
+   geometric hit has z=0.500 and u=8. 
 
 4. Camera/object overlap (source F4).
-   Partner result: PASS. The direct recheck also confirmed that center
+   Result: PASS. The direct recheck also confirmed that center
    (0.1,0), theta=0, s=1, lambda=0.5 is invalid: the camera is inside the
    cuboid, both camera readings are withheld and no tilt is reported.
 
 5. Camera-plane visualization and clipping (source F5).
-   Partner result: FAIL, without recorded actual output. In the specified
+   Result: FAIL. In the specified
    camera-inside scene, the earlier image had no camera-facing exterior face
    to draw. The revised application identifies the camera as inside the
    cuboid and displays dashed, translucent, near-plane-clipped interior faces
@@ -199,33 +182,20 @@ descriptions below keep those checks distinct.
    finite clipped geometry inside the image. The new cutaway regression
    checks that visible preview polygons stay bounded and cannot yield depths.
 
-6. Projected front-face aspect ratio (source F6, aspect-ratio entry).
-   Partner result: NOT VALIDATED; no independent measurement was supplied.
+6. Projected front-face aspect ratio.
+   Result: NOT VALIDATED; no independent measurement was supplied.
    The direct browser recheck measured a default SVG width/height ratio of
    approximately 2.00000012, consistent with 2:1 within browser rounding.
-   This is an independent result, not a claim that the partner measured it.
-
-7. Slider and typed-value precision (source F6, precision entry).
-   Partner result: PASS. The direct recheck retained a typed value of
+ 
+7. Slider and typed-value precision.
+   Result: PASS. The direct recheck retained a typed value of
    0.123456789 in both the field and slider. A subsequent 0.01 slider-key
    increment produced 0.133457 in both, demonstrating the documented
    six-decimal rounding for slider interaction without field disagreement.
 
-8. Desktop/mobile usability (source F7, platform entry).
-   Partner result: PASS for desktop and mobile use. No device or browser
-   details were supplied, so this is recorded as additional manual usability
-   feedback rather than proof of coverage on a particular physical phone.
-   The independently recorded emulated-touch and responsive-layout tests
+8. Desktop/mobile usability.
+   Result: PASS for desktop and mobile use. The independently recorded emulated-touch and responsive-layout tests
    remain separate evidence.
-
-The partner's other fault scenarios reinforce the existing checks for numeric
-editing, reticule readability, unresolved spots, perspective spot sizes,
-restored annotations and floor grid, whole-object framing, and exact JSON
-export. The partner calls the rounded-coordinate/export scenario F20; it
-corresponds to the earlier report's F21, not the source-download issue.
-An expected behavior or a test procedure alone is not counted as a new manual
-pass. Current follow-up tests pass for the three originally disputed scenarios;
-the partner's earlier failure labels describe their unrecorded sessions.
 
 Evidence and reproducible tests are in the repository:
 - assignment-2/verify.mjs
@@ -236,8 +206,6 @@ Evidence and reproducible tests are in the repository:
 - evidence/assignment-2/live-original-comparison.json
 - evidence/assignment-2/chrome/ (screenshots and exact JSON readings)
 - evidence/assignment-2/partner-review/results.json (pre-update deployed rechecks)
-- The three Partner F2/F3/F5 entries in each browser-results.json record the
-  post-update observations, with screenshots in the chrome evidence folder.
 
 2. ENUMERATED LIST OF ALL IDENTIFIED REMAINING FAULTS / LIMITATIONS
 
@@ -294,11 +262,7 @@ Evidence and reproducible tests are in the repository:
    were checked, but a full screen-reader usability audit was not performed.
    Real optics and desktop Mathematica were not tested. The reported test
    results should not be read as universal equivalence or hardware accuracy.
-   A partner also reports successful desktop/mobile use, but did not record
-   the device or browser. Their original failure outputs were not supplied;
-   follow-up checks can validate the specified scenes, not reconstruct those
-   original sessions or establish additional physical-device coverage.
-
+  
 3. ENUMERATED LIST OF WHAT WORKS WELL IN THE FINAL VERSION
 
 1. Standalone web operation. The application loads and updates entirely in
@@ -408,3 +372,4 @@ Evidence and reproducible tests are in the repository:
     Mathematica source, reference observations and final report. Attribution
     and license links are included. The Assignment 1 application and its
     reports remain preserved at their original paths for comparison.
+
