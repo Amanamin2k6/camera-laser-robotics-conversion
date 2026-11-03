@@ -48,6 +48,9 @@ for(const angle of [-30,30]){const r=compute({...DEFAULT,z:5,x:0,angle});near(r.
 const sixty=compute({...DEFAULT,z:5,x:0,angle:60});near(sixty.left.z,3.267949192431123);near(sixty.right.z,5.732050807568877);assert.equal(sixty.estimate,null);assert.match(sixty.reason,/different faces/);
 const student=compute({...DEFAULT,z:4,x:0,angle:50.625});near(student.left.z,2.2333916573887);near(student.right.z,4.430348902136725);assert.equal(student.estimate,null);assert.match(student.reason,/different faces/);
 const half=compute({...DEFAULT,z:5,x:0,angle:180});near(half.left.z,4.5);near(half.estimate,0);
+const partnerOutside=compute({...DEFAULT,z:1,s:2,f:2});assert.equal(partnerOutside.left,null);near(partnerOutside.right.u,8);assert.equal(partnerOutside.right.recovered,null);assert.match(partnerOutside.reason,/misses.*outside the camera image/);
+const insideScene={...DEFAULT,z:.1,x:0},inside=compute(insideScene);assert.equal(inside.cameraInside,true);assert.match(inside.reason,/cutaway preview only/);assert.equal(cameraFaces(insideScene).length,0);
+const interiorFaces=cameraFaces(insideScene,{includeBackFaces:true});assert.ok(interiorFaces.length>0);for(const face of interiorFaces)for(const [u,v] of face.image)assert.ok(Number.isFinite(u)&&Number.isFinite(v)&&Math.abs(u)<=.8+1e-9&&Math.abs(v)<=.4+1e-9);
 const out=compute({...DEFAULT,z:1,f:2});near(out.left.u,-4);near(out.right.u,4);assert.equal(out.left.recovered,null);assert.equal(out.right.recovered,null);assert.equal(out.estimate,null);
 const originalBoundary=compute({...DEFAULT,f:2});assert.ok(originalBoundary.left.inFrame&&originalBoundary.right.inFrame);near(originalBoundary.left.recovered,2.5);
 for(const angle of [-180,-90,0,30,60,90,180]){const r=compute({...DEFAULT,z:.1,x:0,angle});assert.equal(r.valid,false);assert.equal(r.estimate,null);for(const hit of [r.left,r.right])if(hit)assert.equal(hit.recovered,null);}

@@ -16,7 +16,7 @@ const load=async(query='')=>{await page.goto(base+query);await page.locator('#re
 const content=id=>page.locator('#'+id).innerText();
 async function value(key,number){await page.locator('#'+key+'Number').fill(String(number));await page.locator('#'+key+'Number').press('Enter');}
 async function expectText(id,re){assert.match(await content(id),re);}
-async function test(name,fn){try{await fn();results.push({name,status:'PASS'});console.log('PASS '+name);}catch(e){results.push({name,status:'FAIL',error:e.message});console.error('FAIL '+name+': '+e.message);}}
+async function test(name,fn){try{const observations=await fn();results.push({name,status:'PASS',...(observations?{observations}:{})});console.log('PASS '+name);}catch(e){results.push({name,status:'FAIL',error:e.message});console.error('FAIL '+name+': '+e.message);}}
 try {
   await test('T01: Load defaults and reset all scene/view controls',async()=>{
     await load();await expectText('leftDepth',/2\.500 units/);await expectText('rightDepth',/2\.500 units/);await expectText('estimate',/0\.00°/);
@@ -57,6 +57,10 @@ try {
   await test('T09: Half-turn result is explicitly face inclination modulo 180 degrees',async()=>{
     await load();await page.click('[data-preset=halfturn]');await expectText('leftDepth',/4\.500/);await expectText('estimate',/0\.00°/);await expectText('status',/modulo 180°/);assert.equal(await page.inputValue('#angleNumber'),'180');
   });
+  await test('Partner F2: Selected 180-degree rotation and measured zero tilt are clearly separated',async()=>{
+    await load('?z=5&x=0&angle=180&s=1&f=0.5');await expectText('pose-note',/Selected object rotation: 180°/);await expectText('pose-note',/Measured face tilt: 0\.00°/);await expectText('pose-note',/cannot distinguish 0° from 180°/);
+    await page.screenshot({path:path.join(evidence,'partner-half-turn.png'),fullPage:true});return {poseNote:await content('pose-note'),depths:[await content('leftDepth'),await content('rightDepth')],tilt:await content('estimate')};
+  });
   await test('T10/T11: One and two misses have no spurious image dots or angle',async()=>{
     await load();await page.click('[data-preset=miss]');await expectText('leftDepth',/4\.500/);await expectText('rightDepth',/No hit/);assert.equal(await page.locator('.laser-spot').count(),1);
     await page.click('[data-preset=edge]');await expectText('leftDepth',/No hit/);await expectText('rightDepth',/No hit/);await expectText('estimate',/Unavailable/);assert.equal(await page.locator('.laser-spot').count(),0);
@@ -68,10 +72,21 @@ try {
   await test('T12 alternate: Student single-hit configuration reports no-hit and off-image separately',async()=>{
     await load('?z=1&x=-0.2&angle=0&s=2&f=0.5');await expectText('leftDepth',/No hit/);await expectText('rightDepth',/Outside image/);await expectText('estimate',/Unavailable/);await expectText('readings',/0\.500000/);
   });
+  await test('Partner F3: Summary reports both the missed ray and the other off-image hit',async()=>{
+    await load('?z=1&x=-0.2&angle=0&s=2&f=2');await expectText('status',/One laser misses/);await expectText('status',/other hit is outside the camera image/);await expectText('leftDepth',/No hit/);await expectText('rightDepth',/Outside image/);await expectText('estimate',/Unavailable/);
+    const rows=await page.locator('#readings tr').evaluateAll(es=>es.map(e=>[...e.children].map(c=>c.textContent)));assert.equal(rows[1][1],'0.500000');assert.equal(rows[1][2],'8');assert.equal(rows[1][3],'—');
+    await page.screenshot({path:path.join(evidence,'partner-off-image.png'),fullPage:true});return {status:await content('status'),rows};
+  });
   await test('T13: Camera/object overlap is flagged; measurements are withheld',async()=>{
     await load();await value('z',.1);await value('x',0);await expectText('status',/Invalid scene/);await expectText('leftDepth',/Invalid scene/);await expectText('rightDepth',/Invalid scene/);await expectText('estimate',/Unavailable/);
     assert.ok(await page.locator('.invalid-overlay').count());assert.ok(!/NaN|Infinity/.test(await page.locator('#camera').innerHTML()));
     await page.screenshot({path:path.join(evidence,'invalid-camera-plane.png'),fullPage:true});
+  });
+  await test('Partner F5: Camera-inside scene has a labeled finite cutaway and no camera measurements',async()=>{
+    await load('?z=0.1&x=0&angle=0&s=1&f=0.5');await expectText('status',/camera is inside/);await expectText('status',/cutaway preview only/);assert.equal(await page.locator('#camera').getAttribute('data-preview'),'cutaway');assert.ok(await page.locator('.cutaway-face').count()>0);
+    const bounded=await page.locator('.cutaway-face').evaluateAll(es=>es.every(e=>[...e.points].every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=-1e-7&&p.y>=-1e-7&&p.x<=e.ownerSVGElement.viewBox.baseVal.width+1e-7&&p.y<=e.ownerSVGElement.viewBox.baseVal.height+1e-7)));assert.ok(bounded);
+    await expectText('leftDepth',/Invalid scene/);await expectText('rightDepth',/Invalid scene/);await expectText('estimate',/Unavailable/);await expectText('image-note',/not a valid camera measurement/);
+    await page.screenshot({path:path.join(evidence,'partner-cutaway.png'),fullPage:true});return {status:await content('status'),preview:'cutaway',faceCount:await page.locator('.cutaway-face').count(),bounded,cameraDepths:[await content('leftDepth'),await content('rightDepth')],tilt:await content('estimate')};
   });
   await test('T13 clipping: Partial near-plane faces remain finite and bounded',async()=>{
     await load('?z=0.229843&x=0.884660&angle=50.625&s=2&f=0.1');await expectText('status',/Invalid scene/);

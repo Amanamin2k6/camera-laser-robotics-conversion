@@ -1,0 +1,453 @@
+{
+  "date": "2026-11-02",
+  "url": "https://amanamin2k6.github.io/camera-laser-robotics-conversion/assignment-2/",
+  "browser": "156.0.8078.74",
+  "method": "Fresh browser operations on the deployed Assignment 2 application, using the partner document's specified settings. These checks are separate from the partner's unrecorded outputs.",
+  "results": [
+    {
+      "name": "same-face-baseline",
+      "result": {
+        "state": {
+          "z": "5",
+          "x": "0",
+          "angle": "0",
+          "s": "1",
+          "f": "0.5"
+        },
+        "resolution": "640",
+        "depths": [
+          "4.500 units",
+          "4.500 units"
+        ],
+        "tilt": "0.00\u00c2\u00b0",
+        "status": "Two usable laser hits share one face. Recovered face tilt: 0.00\u00c2\u00b0 (modulo 180\u00c2\u00b0). Camera sampling check enabled.",
+        "rows": [
+          [
+            "Left (+s)",
+            "4.500000",
+            "-0.111111111111",
+            "4.500000",
+            "Visible"
+          ],
+          [
+            "Right (\u00e2\u02c6\u2019s)",
+            "4.500000",
+            "0.111111111111",
+            "4.500000",
+            "Visible"
+          ]
+        ],
+        "visibleFaces": [
+          {
+            "ratio": 2,
+            "points": [
+              [
+                363.27777099609375,
+                321.3611145019531
+              ],
+              [
+                363.27777099609375,
+                181.63888549804688
+              ],
+              [
+                642.7222290039062,
+                181.63888549804688
+              ],
+              [
+                642.7222290039062,
+                321.3611145019531
+              ]
+            ],
+            "bounded": true
+          }
+        ],
+        "invalidOverlay": null
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "different-faces-60",
+      "result": {
+        "state": {
+          "z": "5",
+          "x": "0",
+          "angle": "60",
+          "s": "1",
+          "f": "0.5"
+        },
+        "resolution": "640",
+        "depths": [
+          "3.268 units",
+          "5.732 units"
+        ],
+        "tilt": "Unavailable",
+        "status": "The lasers hit different faces. The same-face angle formula is not applicable.",
+        "rows": [
+          [
+            "Left (+s)",
+            "3.267949",
+            "-0.153001154717",
+            "3.267949",
+            "Visible"
+          ],
+          [
+            "Right (\u00e2\u02c6\u2019s)",
+            "5.732051",
+            "0.0872288150935",
+            "5.732051",
+            "Visible"
+          ]
+        ],
+        "visibleFaces": [
+          {
+            "ratio": 0.6170885491875967,
+            "points": [
+              [
+                443.9378356933594,
+                355.6684265136719
+              ],
+              [
+                443.9378356933594,
+                147.33157348632812
+              ],
+              [
+                572.5001220703125,
+                203.0006866455078
+              ],
+              [
+                572.5001220703125,
+                299.9992980957031
+              ]
+            ],
+            "bounded": true
+          },
+          {
+            "ratio": 0.3311769732796506,
+            "points": [
+              [
+                374.94146728515625,
+                340.8631591796875
+              ],
+              [
+                374.94146728515625,
+                162.13685607910156
+              ],
+              [
+                443.9378356933594,
+                147.33157348632812
+              ],
+              [
+                443.9378356933594,
+                355.6684265136719
+              ]
+            ],
+            "bounded": true
+          }
+        ],
+        "invalidOverlay": null
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "half-turn-180",
+      "result": {
+        "state": {
+          "z": "5",
+          "x": "0",
+          "angle": "180",
+          "s": "1",
+          "f": "0.5"
+        },
+        "resolution": "640",
+        "depths": [
+          "4.500 units",
+          "4.500 units"
+        ],
+        "tilt": "0.00\u00c2\u00b0",
+        "status": "Two usable laser hits share one face. Recovered face tilt: 0.00\u00c2\u00b0 (modulo 180\u00c2\u00b0). Camera sampling check enabled.",
+        "rows": [
+          [
+            "Left (+s)",
+            "4.500000",
+            "-0.111111111111",
+            "4.500000",
+            "Visible"
+          ],
+          [
+            "Right (\u00e2\u02c6\u2019s)",
+            "4.500000",
+            "0.111111111111",
+            "4.500000",
+            "Visible"
+          ]
+        ],
+        "visibleFaces": [
+          {
+            "ratio": 2,
+            "points": [
+              [
+                363.27777099609375,
+                321.3611145019531
+              ],
+              [
+                363.27777099609375,
+                181.63888549804688
+              ],
+              [
+                642.7222290039062,
+                181.63888549804688
+              ],
+              [
+                642.7222290039062,
+                321.3611145019531
+              ]
+            ],
+            "bounded": true
+          }
+        ],
+        "invalidOverlay": null
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "partner-off-image",
+      "result": {
+        "state": {
+          "z": "1",
+          "x": "-0.2",
+          "angle": "0",
+          "s": "2",
+          "f": "2"
+        },
+        "resolution": "640",
+        "depths": [
+          "No hit",
+          "Outside image"
+        ],
+        "tilt": "Unavailable",
+        "status": "One laser misses the cuboid. Face tilt needs two visible hits.",
+        "rows": [
+          [
+            "Left (+s)",
+            "\u00e2\u20ac\u201d",
+            "\u00e2\u20ac\u201d",
+            "\u00e2\u20ac\u201d",
+            "No hit"
+          ],
+          [
+            "Right (\u00e2\u02c6\u2019s)",
+            "0.500000",
+            "8",
+            "\u00e2\u20ac\u201d",
+            "Outside image"
+          ]
+        ],
+        "visibleFaces": [
+          {
+            "ratio": 2,
+            "points": [
+              [
+                1006,
+                5.684341886080802e-14
+              ],
+              [
+                1006,
+                503
+              ],
+              [
+                -1.705302430298969e-13,
+                503
+              ],
+              [
+                -1.1368683094535245e-13,
+                0
+              ]
+            ],
+            "bounded": true
+          }
+        ],
+        "invalidOverlay": null
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "camera-inside",
+      "result": {
+        "state": {
+          "z": "0.1",
+          "x": "0",
+          "angle": "0",
+          "s": "1",
+          "f": "0.5"
+        },
+        "resolution": "640",
+        "depths": [
+          "Invalid scene",
+          "Invalid scene"
+        ],
+        "tilt": "Unavailable",
+        "status": "Invalid scene: the entire cuboid must be in front of the camera plane (z > 0.01). Move it forward or reduce its rotation.",
+        "rows": [
+          [
+            "Left (+s)",
+            "0.600000",
+            "-0.833333333333",
+            "\u00e2\u20ac\u201d",
+            "Invalid scene"
+          ],
+          [
+            "Right (\u00e2\u02c6\u2019s)",
+            "0.600000",
+            "0.833333333333",
+            "\u00e2\u20ac\u201d",
+            "Invalid scene"
+          ]
+        ],
+        "visibleFaces": [],
+        "invalidOverlay": "Invalid camera/object configuration"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "partial-camera-plane-crossing",
+      "result": {
+        "state": {
+          "z": "0.229843",
+          "x": "0.88466",
+          "angle": "50.625",
+          "s": "2",
+          "f": "0.1"
+        },
+        "resolution": "640",
+        "depths": [
+          "Invalid scene",
+          "Invalid scene"
+        ],
+        "tilt": "Unavailable",
+        "status": "Invalid scene: the entire cuboid must be in front of the camera plane (z > 0.01). Move it forward or reduce its rotation.",
+        "rows": [
+          [
+            "Left (+s)",
+            "\u00e2\u20ac\u201d",
+            "\u00e2\u20ac\u201d",
+            "\u00e2\u20ac\u201d",
+            "Invalid scene"
+          ],
+          [
+            "Right (\u00e2\u02c6\u2019s)",
+            "\u00e2\u20ac\u201d",
+            "\u00e2\u20ac\u201d",
+            "\u00e2\u20ac\u201d",
+            "Invalid scene"
+          ]
+        ],
+        "visibleFaces": [
+          {
+            "ratio": 1.0660390683244285,
+            "points": [
+              [
+                447.3441162109375,
+                503
+              ],
+              [
+                5.684341886080802e-14,
+                503
+              ],
+              [
+                5.684341886080802e-14,
+                -8.526512829121202e-14
+              ],
+              [
+                447.3441162109375,
+                5.684341886080802e-14
+              ],
+              [
+                536.2176513671875,
+                208.3955841064453
+              ],
+              [
+                536.2176513671875,
+                294.6044006347656
+              ]
+            ],
+            "bounded": true
+          }
+        ],
+        "invalidOverlay": "Invalid camera/object configuration"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "default-aspect-ratio",
+      "result": {
+        "state": {
+          "z": "3",
+          "x": "-0.2",
+          "angle": "0",
+          "s": "1",
+          "f": "0.5"
+        },
+        "resolution": "640",
+        "depths": [
+          "2.500 units",
+          "2.500 units"
+        ],
+        "tilt": "0.00\u00c2\u00b0",
+        "status": "Two usable laser hits share one face. Recovered face tilt: 0.00\u00c2\u00b0 (modulo 180\u00c2\u00b0). Camera sampling check enabled.",
+        "rows": [
+          [
+            "Left (+s)",
+            "2.500000",
+            "-0.2",
+            "2.500000",
+            "Visible"
+          ],
+          [
+            "Right (\u00e2\u02c6\u2019s)",
+            "2.500000",
+            "0.2",
+            "2.500000",
+            "Visible"
+          ]
+        ],
+        "visibleFaces": [
+          {
+            "ratio": 2.000000121342259,
+            "points": [
+              [
+                276.6499938964844,
+                377.25
+              ],
+              [
+                276.6499938964844,
+                125.75
+              ],
+              [
+                779.6500244140625,
+                125.75
+              ],
+              [
+                779.6500244140625,
+                377.25
+              ]
+            ],
+            "bounded": true
+          }
+        ],
+        "invalidOverlay": null
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "precision",
+      "status": "PASS",
+      "typed": "0.123456789",
+      "sliderAfterOneStep": "0.133457",
+      "note": "Both fields remain synchronized; slider updates are rounded to six decimal places."
+    }
+  ],
+  "pageErrors": [],
+  "reportedFailuresReproduced": false,
+  "limitation": "Only the specified scenarios were rechecked; the partner's original failing outputs, browser and device were not supplied.",
+  "stage": "Pre-update checks of deployed revision 5de961a, before the November 2 interface clarifications"
+}

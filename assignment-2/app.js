@@ -1,4 +1,4 @@
-import {DEFAULT,LIMITS,IMAGE,NEAR,compute,cameraFaces,project,clipSegment,reticule} from './geometry.js';
+import {DEFAULT,LIMITS,IMAGE,NEAR,compute,cameraFaces,project,clipSegment,reticule} from './geometry.js?v=20261102-partner';
 
 const $=id=>document.getElementById(id);
 const specs=[
@@ -131,7 +131,11 @@ function renderCamera(result) {
   out+=`<rect x="0" y="${h/2}" width="${w}" height="${Math.max(0,Math.min(h,farV)-h/2)}" fill="#e1e7e9" opacity=".6"/>`;
   for(let z=1;z<far;z++)out+=clippedLine(project([-50,-1,z],state.f),project([50,-1,z],state.f));
   for(let x=-Math.round(3/state.f);x<=Math.round(3/state.f);x++)out+=clippedLine(project([x,-1,NEAR],state.f),project([x,-1,far],state.f));
-  for(const face of cameraFaces(state))out+=poly(face.image.map(cp),face.face%2?'#ad804b':'#bb915c','#6f512f',`class="camera-face" data-face="${face.face}" stroke-width="1"`);
+  const cutaway=!result.valid&&result.cameraInside;
+  svg.dataset.preview=cutaway?'cutaway':result.valid?'camera':'clipped-invalid';
+  // Interior back faces are shown only as an explicitly invalid cutaway.
+  // Ordinary camera rendering retains its original outward-face visibility rule.
+  for(const face of cameraFaces(state,{includeBackFaces:cutaway}))out+=poly(face.image.map(cp),face.face%2?'#ad804b':'#bb915c','#6f512f',`class="camera-face${cutaway?' cutaway-face':''}" data-face="${face.face}" stroke-width="1" ${cutaway?'fill-opacity=".2" stroke-dasharray="5 4"':''}`);
   out+=line([0,h/2],[w,h/2],'#637a84')+line([w/2,0],[w/2,h],'#7c929b',1,'3 4');
   const ticks=reticule(state.f,state.s),minorPositions=[];
   for(const depth of ticks.minor)for(const sign of [-1,1]){
@@ -156,11 +160,11 @@ function renderCamera(result) {
   out+=text([w/2+6,15],'vanishing line','start','guide');
   if(!result.valid){
     out+=`<rect x="8" y="${h/2-25}" width="${w-16}" height="50" rx="4" fill="#fff4f1" opacity=".95"/>`;
-    out+=text([w/2,h/2-4],'Invalid camera/object configuration','middle','invalid-overlay');
-    out+=text([w/2,h/2+15],'Move the cuboid in front of the camera.','middle','guide');
+    out+=text([w/2,h/2-4],cutaway?'Camera inside object · cutaway preview':'Invalid camera/object configuration','middle','invalid-overlay');
+    out+=text([w/2,h/2+15],'Measurements disabled. Move the object forward.','middle','guide');
   }
   svg.innerHTML=out;
-  $('image-note').textContent=`Equal image-axis scaling. ${zoom===1?'Original bounds: u ∈ [−0.8, 0.8], v ∈ [−0.4, 0.4].':`${zoom}× viewing crop; the physical sensor bounds stay ±0.8 by ±0.4.`} Reticule signs follow image side; forward distances are positive. Spot size follows the original relative scale; tiny spots are not artificially enlarged.`;
+  $('image-note').textContent=`${cutaway?'Invalid setup: dashed, translucent interior faces form a cutaway preview, not a valid camera measurement. ':''}Equal image-axis scaling. ${zoom===1?'Original bounds: u ∈ [−0.8, 0.8], v ∈ [−0.4, 0.4].':`${zoom}× viewing crop; the physical sensor bounds stay ±0.8 by ±0.4.`} Reticule signs follow image side; forward distances are positive. Spot size follows the original relative scale; tiny spots are not artificially enlarged.`;
 }
 
 function renderDial() {
@@ -184,6 +188,9 @@ function render() {
   $('resolution').value=state.resolution;$('zoom').value=zoom;
   $('leftDepth').textContent=readingLabel(model.left);$('rightDepth').textContent=readingLabel(model.right);
   $('estimate').textContent=model.estimate===null?'Unavailable':`${fmt(model.estimate,2)}°`;
+  const halfturn=model.estimate!==null&&Math.abs(state.angle-model.estimate)>179.999;
+  $('pose-note').dataset.halfturn=String(halfturn);
+  $('pose-note').textContent=`Selected object rotation: ${short(state.angle)}°. ${model.estimate===null?'Face tilt unavailable; two usable hits on one face are required.':`Measured face tilt: ${fmt(model.estimate,2)}° modulo 180°. ${halfturn?'Equal laser depths cannot distinguish 0° from 180° object rotation.':'Full object rotation is not uniquely determined by these two depths.'}`}`;
   $('status').textContent=model.reason||`Two usable laser hits share one face. Recovered face tilt: ${fmt(model.estimate,2)}° (modulo 180°). ${state.resolution===0?'Ideal geometry mode uses exact coordinates; no sampling check.':'Camera sampling check enabled.'}`;
   $('status').className=`status ${!model.valid?'invalid':model.reason?'warning':''}`;
   $('readings').innerHTML=[[model.left,'Left (+s)'],[model.right,'Right (−s)']].map(([hit,name])=>`<tr><th scope="row">${name}</th>${numericCell(hit?.z)}${numericCell(hit?.u,12)}${numericCell(hit?.recovered)}<td>${!model.valid?'Invalid scene':hit?.status||'No hit'}</td></tr>`).join('');
@@ -217,7 +224,7 @@ dial.addEventListener('keydown',e=>{
   if(!step)return;e.preventDefault();const q=state.angle/5.625,next=(step>0?Math.floor(q+1e-10)+1:Math.ceil(q-1e-10)-1)*5.625;state.angle=rounded(Math.max(-180,Math.min(180,next)));drafts.delete('angle');clearError('angle');render();
 });
 
-function snapshot(){return {state:{...state},view:{zoom},geometry:{points:model.points,left:model.left,right:model.right},measurement:{validScene:model.valid,faceTiltDegrees:model.estimate,sharedFaces:model.sharedFaces,separationPixels:model.separationPixels,reason:model.reason||'Two usable hits on one face'},convention:'u=-f*x/z; v=f*y/z; depths are forward axial distances; tilt is modulo 180 degrees'};}
+function snapshot(){return {state:{...state},view:{zoom,cameraPreview:model.cameraInside?'invalid cutaway':model.valid?'camera image':'clipped invalid scene'},geometry:{points:model.points,left:model.left,right:model.right},measurement:{validScene:model.valid,cameraInside:model.cameraInside,faceTiltDegrees:model.estimate,sharedFaces:model.sharedFaces,separationPixels:model.separationPixels,reason:model.reason||'Two usable hits on one face'},convention:'u=-f*x/z; v=f*y/z; depths are forward axial distances; tilt is modulo 180 degrees'};}
 $('export').addEventListener('click',()=>{
   const blob=new Blob([JSON.stringify(snapshot(),null,2)+'\n'],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='camera-laser-readings.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('notice').textContent='Exact scene, geometric intersections and camera-validity checks exported.';

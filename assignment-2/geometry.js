@@ -34,6 +34,9 @@ export function intersect(points, lateral) {
 export function compute(scene) {
   const points = corners(scene);
   const minDepth = Math.min(...points.map(p => p[0]));
+  const angle=scene.angle*Math.PI/180;
+  const cameraLocal=[-Math.cos(angle)*scene.z-Math.sin(angle)*scene.x,Math.sin(angle)*scene.z-Math.cos(angle)*scene.x];
+  const cameraInside=Math.abs(cameraLocal[0])<=.5+EPS&&Math.abs(cameraLocal[1])<=2+EPS;
   const valid = Object.entries(LIMITS).every(([key, [lo,hi]]) => Number.isFinite(scene[key]) && scene[key]>=lo && scene[key]<=hi) && minDepth > NEAR;
   const left = intersect(points,scene.s), right = intersect(points,-scene.s);
   for (const hit of [left,right]) if (hit) {
@@ -53,14 +56,18 @@ export function compute(scene) {
   }
   const sharedFaces = left && right ? left.faces.filter(face => right.faces.includes(face)) : [];
   let reason = '';
-  if (!valid) reason = 'Invalid scene: the entire cuboid must be in front of the camera plane (z > 0.01). Move it forward or reduce its rotation.';
+  if (!valid) reason = cameraInside
+    ? 'Invalid scene: the camera is inside the cuboid. The image is a cutaway preview only; camera measurements are disabled. Move the entire cuboid in front of z = 0.01.'
+    : 'Invalid scene: the entire cuboid must be in front of the camera plane (z > 0.01). Visible geometry is clipped for inspection; camera measurements are disabled. Move it forward or reduce its rotation.';
   else if (!left && !right) reason = 'Both lasers miss the cuboid. Two visible hits on one face are required.';
-  else if (!left || !right) reason = 'One laser misses the cuboid. Face tilt needs two visible hits.';
+  else if (!left || !right) reason = (left||right)?.inFrame
+    ? 'One laser misses the cuboid. Face tilt needs two visible hits.'
+    : 'One laser misses the cuboid. The other hit is outside the camera image; no usable camera depths or face tilt are available.';
   else if (!left.inFrame || !right.inFrame) reason = 'A laser hit is outside the camera image. Geometric intersections are shown, but off-image camera depths are unavailable.';
   else if (overlap) reason = 'Laser spots overlap or are less than one pixel apart at the selected resolution. Separate camera measurements are unavailable; exact geometric values remain in the table.';
   else if (!sharedFaces.length) reason = 'The lasers hit different faces. The same-face angle formula is not applicable.';
   const estimate = reason ? null : Math.atan2(right.recovered-left.recovered,2*scene.s)*180/Math.PI;
-  return {points, minDepth, valid, left, right, sharedFaces, separationPixels, overlap, estimate, reason};
+  return {points, minDepth, valid, cameraInside, left, right, sharedFaces, separationPixels, overlap, estimate, reason};
 }
 
 // Sutherland-Hodgman clipping. Clip in world space before dividing by z, then
@@ -83,12 +90,12 @@ export function clipPolygon(vertices, axis, bound, greater) {
 
 export function project([x,y,z], f) { return [-f*x/z, f*y/z]; }
 
-export function cameraFaces(scene) {
+export function cameraFaces(scene, {includeBackFaces=false}={}) {
   const pts=corners(scene), faces=[];
   pts.forEach((a,i) => {
     const b=pts[(i+1)%4];
     const facing=(b[1]-a[1])*(-a[0])-(b[0]-a[0])*(-a[1]);
-    if (facing <= EPS) return;
+    if (!includeBackFaces && facing <= EPS) return;
     const world=clipPolygon([[a[1],-1,a[0]],[a[1],1,a[0]],[b[1],1,b[0]],[b[1],-1,b[0]]],2,NEAR,true);
     let image=world.map(p => project(p,scene.f));
     for (const [axis,bound,greater] of [[0,-IMAGE.u,true],[0,IMAGE.u,false],[1,-IMAGE.v,true],[1,IMAGE.v,false]]) image=clipPolygon(image,axis,bound,greater);

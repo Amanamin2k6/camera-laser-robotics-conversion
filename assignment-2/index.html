@@ -6,7 +6,7 @@
   <meta name="description" content="An interactive robotics demonstration of distance and face inclination measured using a pinhole camera and two parallel lasers. Validated JavaScript adaptation of the Wolfram demonstration.">
   <title>Camera & Laser Geometry Lab · Assignment 2</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261102-partner">
 </head>
 <body>
   <a class="skip" href="#controls">Skip to scene controls</a>
@@ -14,13 +14,14 @@
     <div class="eyebrow">ROBOTICS LAB <span>ASSIGNMENT 2</span></div>
     <h1>Measure with light.</h1>
     <p class="intro">Explore how a camera and two parallel lasers reveal a surface’s distance and tilt. Move the cuboid, change the optics, and follow the geometry.</p>
-    <div class="headerlinks"><a href="https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/" target="_blank" rel="noopener">Original Wolfram demonstration ↗</a><a href="report.txt">Final evaluation (.txt)</a></div>
+    <div class="headerlinks"><a href="https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/" target="_blank" rel="noopener">Original Wolfram demonstration ↗</a><a href="report.txt?v=20261102-partner">Final evaluation (.txt)</a></div>
   </header>
 
   <section class="live-summary" aria-label="Live camera measurements">
     <div><span>Left laser · +s</span><strong id="leftDepth">—</strong></div>
     <div><span>Right laser · −s</span><strong id="rightDepth">—</strong></div>
-    <div><span>Measured face tilt</span><strong id="estimate">—</strong></div>
+    <div><span>Face tilt · modulo 180°</span><strong id="estimate">—</strong></div>
+    <p id="pose-note"></p>
   </section>
   <main>
     <aside class="panel controls" aria-labelledby="controls-title">
@@ -64,7 +65,7 @@
       </details>
     </section>
   </main>
-  <footer><p>Adapted with OpenAI Codex from <a href="https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/">Measuring Distance and Orientation Using Camera and Lasers</a>, by Shiva Shahrokhi and Aaron T. Becker (2016). Original geometry, projection convention and calibration ranges retained; validation and interaction improved.</p><p><a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a> · <a href="source.zip" download>Download complete source</a> · <a href="https://github.com/Amanamin2k6/camera-laser-robotics-conversion/tree/codex/assignment-2/assignment-2">Code & tests</a> · <a href="../camera-laser-app/dist/">Preserved Assignment 1 app</a> · <a href="report.txt" download>Submission text file</a></p></footer>
-  <script type="module" src="app.js"></script>
+  <footer><p>Adapted with OpenAI Codex from <a href="https://demonstrations.wolfram.com/MeasuringDistanceAndOrientationUsingCameraAndLasers/">Measuring Distance and Orientation Using Camera and Lasers</a>, by Shiva Shahrokhi and Aaron T. Becker (2016). Original geometry, projection convention and calibration ranges retained; validation and interaction improved.</p><p><a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a> · <a href="source.zip?v=20261102-partner" download>Download complete source</a> · <a href="https://github.com/Amanamin2k6/camera-laser-robotics-conversion/tree/codex/assignment-2/assignment-2">Code & tests</a> · <a href="../camera-laser-app/dist/">Preserved Assignment 1 app</a> · <a href="report.txt?v=20261102-partner" download>Submission text file</a></p></footer>
+  <script type="module" src="app.js?v=20261102-partner"></script>
 </body>
 </html>

@@ -8,7 +8,8 @@
     "resolution": 0
   },
   "view": {
-    "zoom": 1
+    "zoom": 1,
+    "cameraPreview": "camera image"
   },
   "geometry": {
     "points": [
@@ -54,6 +55,7 @@
   },
   "measurement": {
     "validScene": true,
+    "cameraInside": false,
     "faceTiltDegrees": 0,
     "sharedFaces": [
       3

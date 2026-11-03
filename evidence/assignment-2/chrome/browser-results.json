@@ -1,7 +1,7 @@
 {
-  "url": "http://127.0.0.1:4173/",
+  "url": "http://127.0.0.1:4175/",
   "channel": "chrome",
-  "browser": "156.0.8078.48",
+  "browser": "156.0.8078.74",
   "tests": [
     {
       "name": "T01: Load defaults and reset all scene/view controls",
@@ -36,6 +36,18 @@
       "status": "PASS"
     },
     {
+      "name": "Partner F2: Selected 180-degree rotation and measured zero tilt are clearly separated",
+      "status": "PASS",
+      "observations": {
+        "poseNote": "Selected object rotation: 180°. Measured face tilt: 0.00° modulo 180°. Equal laser depths cannot distinguish 0° from 180° object rotation.",
+        "depths": [
+          "4.500 units",
+          "4.500 units"
+        ],
+        "tilt": "0.00°"
+      }
+    },
+    {
       "name": "T10/T11: One and two misses have no spurious image dots or angle",
       "status": "PASS"
     },
@@ -48,8 +60,46 @@
       "status": "PASS"
     },
     {
+      "name": "Partner F3: Summary reports both the missed ray and the other off-image hit",
+      "status": "PASS",
+      "observations": {
+        "status": "One laser misses the cuboid. The other hit is outside the camera image; no usable camera depths or face tilt are available.",
+        "rows": [
+          [
+            "Left (+s)",
+            "—",
+            "—",
+            "—",
+            "No hit"
+          ],
+          [
+            "Right (−s)",
+            "0.500000",
+            "8",
+            "—",
+            "Outside image"
+          ]
+        ]
+      }
+    },
+    {
       "name": "T13: Camera/object overlap is flagged; measurements are withheld",
       "status": "PASS"
+    },
+    {
+      "name": "Partner F5: Camera-inside scene has a labeled finite cutaway and no camera measurements",
+      "status": "PASS",
+      "observations": {
+        "status": "Invalid scene: the camera is inside the cuboid. The image is a cutaway preview only; camera measurements are disabled. Move the entire cuboid in front of z = 0.01.",
+        "preview": "cutaway",
+        "faceCount": 1,
+        "bounded": true,
+        "cameraDepths": [
+          "Invalid scene",
+          "Invalid scene"
+        ],
+        "tilt": "Unavailable"
+      }
     },
     {
       "name": "T13 clipping: Partial near-plane faces remain finite and bounded",
@@ -132,7 +182,7 @@
       "status": "PASS"
     }
   ],
-  "pass": 32,
+  "pass": 35,
   "fail": 0,
   "pageErrors": [],
   "failedRequests": [],
