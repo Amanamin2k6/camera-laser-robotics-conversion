@@ -1,6 +1,7 @@
 ASSIGNMENT 2 - IMPROVED ROBOTICS WEB DEMONSTRATION
 Measuring Distance and Orientation Using Camera and Lasers
-Implementation and testing: OpenAI Codex, October 28, 2026
+Implementation and AI testing: OpenAI Codex, October 28, 2026
+Report updated November 2, 2026 with student-provided validation notes.
 
 1. FINAL APPLICATION AND CODE
 
@@ -79,6 +80,66 @@ Testing performed on the final implementation:
    were also checked independently. These historical observations are kept
    separate from the four fresh comparisons. Desktop Mathematica and real
    camera/laser hardware were not executed or tested.
+
+ADDITIONAL STUDENT-REPORTED MANUAL VALIDATION
+
+The supplied validation notes report that the following manual checks passed.
+These student-reported observations complement the independent calculation
+and browser evidence above.
+
+Source validation notes:
+https://docs.google.com/document/d/1y3JIK6hNM0sNxqDXuccduKynvrvpREYU7KXhWPb451Q/edit
+
+1. Initial load. The cuboid, camera, lasers, controls and measurement displays
+   appeared without visible errors.
+
+2. Reset. After several controls were changed, Reset returned the parameters
+   to the documented default values.
+
+3. Object movement. Dragging the cuboid updated the geometry, laser
+   intersections and displayed measurements together.
+
+4. Positive rotation. Entering +30 degrees rotated the cuboid and changed the
+   intersection depths.
+
+5. Negative rotation. Entering -30 degrees preserved the negative sign and
+   rotated the cuboid in the opposite direction.
+
+6. Focal-length adjustment. Changing focal length from 0.5 to 2 changed the
+   projected image positions while the physical intersection depths remained
+   unchanged for the same object and laser configuration.
+
+7. Laser-spacing adjustment. Changing the laser offset moved the lasers and
+   updated the corresponding intersections and measurements.
+
+8. Numeric editing and validation. Character-by-character negative entry and
+   decimal entry preserved the intended values. Clearing a numeric field did
+   not unexpectedly move the cuboid. Incomplete entries required a complete
+   number, and an out-of-range depth of 99 was rejected with an explanation
+   rather than silently replacing the scene value.
+
+9. One-laser miss. The one-miss preset produced one valid measurement and
+   one No hit result, with no unsupported angle estimate.
+
+10. Camera-plane crossing. Moving the cuboid into an invalid near-camera
+    configuration produced a warning and withheld invalid camera measurements.
+
+11. Window resizing. The application remained usable in narrow and wide
+    windows without page-level horizontal overflow. Some plot labels were
+    hidden to prevent collisions, as documented in the remaining limitations.
+
+12. Non-numeric entry. The notes report correct rejection of alphabetic input.
+    In the final application, non-numeric text is rejected when applied and
+    does not change the scene. Draft fields may temporarily contain letters
+    while editing; validation occurs on Enter or blur.
+
+The accompanying numerical checklist covers the default, +/-30-degree,
+60-degree different-face and both-miss cases. Its expected values agree with
+the independent checks above. The notes give an overall pass result rather
+than separate observed numerical readouts for each case.
+For the quoted +/-30-degree and 60-degree depth checks, the center is (5,0),
+s=1 and lambda=0.5. The both-miss preset uses center (5,0), theta=90 degrees,
+s=1 and lambda=0.5.
 
 Evidence and reproducible tests are in the repository:
 - assignment-2/verify.mjs
